@@ -3,7 +3,7 @@ import {View, Text, FlatList, Image, TouchableOpacity} from 'react-native';
 import {HomeProviderService} from '../../services/HomeProviderService';
 import {useNavigation} from '@react-navigation/native';
 import {styles} from '../../StyleSheet/style';
-
+import Icon from 'react-native-vector-icons/Ionicons';
 const ProviderService = ({route}) => {
   const [service, setService] = useState([]);
   const {providerId, providerTitle} = route.params;
@@ -62,8 +62,8 @@ const ProviderService = ({route}) => {
                     <TouchableOpacity
                       style={styles.iconButton}
                       onPress={() => handleHeartPress(index)}>
-                      <FontAwesome
-                        name={isHeartFilledArray[index] ? 'heart' : 'heart-o'}
+                      <Icon
+                        name={isHeartFilledArray[index] ? 'heart' : 'heart-outline'}
                         size={30}
                         color={isHeartFilledArray[index] ? 'red' : '#3498db'}
                       />

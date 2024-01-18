@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, Image } from "react-native";
 import { styles } from "../../StyleSheet/style";
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const CardFirst = ({ item, handleCardPress }) => {
   const [isHeartFilled, setHeartFilled] = useState(false);
@@ -19,15 +20,15 @@ const CardFirst = ({ item, handleCardPress }) => {
       <TouchableOpacity onPress={handleImagePress}>
         <Image source={{ uri: item.img }} style={styles.mediumcardImage} />
       </TouchableOpacity>
-      {/* <View style={styles.overlayIcons}>
+      <View style={styles.overlayIcons}>
         <TouchableOpacity style={styles.iconButton} onPress={handleHeartPress}>
-          <FontAwesome
-            name={isHeartFilled ? "heart" : "heart-o"}
+          <Icon
+            name={isHeartFilled ? 'heart' : 'heart-outline'}
             size={30}
             color={isHeartFilled ? "red" : "#3498db"}
           />
         </TouchableOpacity>
-      </View> */}
+      </View>
       <View style={styles.cardTitleContainer}>
         <Text style={styles.CardTitle}>{item.name}</Text>
       </View>

@@ -28,12 +28,12 @@ const SingleProvider = () => {
 
   return (
     <View>
-      <Text style={styles.headerText}>Woman</Text>
+      <Text style={styles.headerText}>Toys</Text>
       <FlatList
         horizontal
         data={service}
         renderItem={({ item }) => {
-          if (item.provider_id == 3)
+          if (item.provider_id == 1)
             return <CardFirst item={item} handleCardPress={handleCardPress} />;
         }}
         keyExtractor={(item) => item.images}
@@ -66,12 +66,12 @@ const SingleProvider = () => {
       />
 
       {/* 4th */}
-      <Text style={styles.headerText}>Jewellery &Accessories</Text>
+      <Text style={styles.headerText}>Woman</Text>
       <FlatList
         horizontal
         data={service}
         renderItem={({ item }) => {
-          if (item.provider_id == 9)
+          if (item.provider_id == 3)
             return <CardFirst item={item} handleCardPress={handleCardPress} />;
         }}
         keyExtractor={(item) => item.id}
@@ -79,12 +79,12 @@ const SingleProvider = () => {
       />
 
       {/* 5th */}
-      <Text style={styles.headerText}>Bags </Text>
+      <Text style={styles.headerText}>Men </Text>
       <FlatList
         horizontal
         data={service}
         renderItem={({ item }) => {
-          if (item.provider_id == 7)
+          if (item.provider_id == 4)
             return <CardFirst item={item} handleCardPress={handleCardPress} />;
         }}
         keyExtractor={(item) => item.id}

@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, Image, TouchableOpacity, Button } from "react-native";
-import { addToCart } from "../redux/action";
+// import { addToCart } from "../redux/action";
 import { useDispatch } from "react-redux";
 import { styles } from "../../StyleSheet/style";
 
@@ -11,7 +11,7 @@ const SingleService = ({ route }) => {
 
   const handleAddToCart = (item) => {
     console.log(item);
-    dispatch(addToCart(item));
+    // dispatch(addToCart(item));
   };
 
   const handleBuyNow = () => {
@@ -42,7 +42,7 @@ const SingleService = ({ route }) => {
         <Text>Offer: {propKey.offer}% off</Text>
         <Text>
           Rating: {propKey.rating}{" "}
-          <FontAwesome name="star" size={16} color="gold" />
+          {/* <FontAwesome name="star" size={16} color="gold" /> */}
         </Text>
       </View>
       <View style={styles.buttonContainer}>
