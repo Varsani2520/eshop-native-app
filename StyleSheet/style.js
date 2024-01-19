@@ -156,11 +156,15 @@ export const styles = StyleSheet.create({
   },
   Cartimage: {
     width: 100,
-    height: 100,
+    height: 130,
+    marginTop:10,
     resizeMode: 'cover',
   },
   detailsContainer: {
     flex: 1,
+    backgroundColor: 'white',
+    // borderRadius: 10,
+    padding: 10,marginTop:10
   },
   price: {
     fontSize: 16,
@@ -170,9 +174,11 @@ export const styles = StyleSheet.create({
   quantityContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'lightgray',
     borderRadius: 5,
-    padding: 5,
+    backgroundColor: 'white',
+    width: 100,
+    padding: 3,
+    marginBottom: 2,
   },
   quantityButton: {
     fontSize: 18,
@@ -186,16 +192,16 @@ export const styles = StyleSheet.create({
   itemContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 10,
   },
   incrementButton: {
-    backgroundColor: 'green', // Set your desired background color
-    padding: 10,
+    backgroundColor: '#3498db',
+    padding: 7,
     borderRadius: 5,
   },
   decrementButton: {
-    backgroundColor: 'red', // Set your desired background color
-    padding: 10,
+    backgroundColor: '#3498db',
+    padding: 7,
     borderRadius: 5,
   },
   CartbuttonText: {

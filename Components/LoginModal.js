@@ -1,8 +1,15 @@
-import React, { useState } from 'react';
-import { View, Text, Modal, TextInput, Button, TouchableOpacity } from 'react-native';
-import { styles } from '../StyleSheet/style';
+import React, {useState} from 'react';
+import {
+  View,
+  Text,
+  Modal,
+  TextInput,
+  Button,
+  TouchableOpacity,
+} from 'react-native';
+import {styles} from '../StyleSheet/style';
 
-const LoginModal = ({ isVisible, onClose }) => {
+const LoginModal = ({isVisible, onClose}) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -20,8 +27,7 @@ const LoginModal = ({ isVisible, onClose }) => {
         <TouchableOpacity
           style={styles.backdrop}
           activeOpacity={1}
-          onPress={onClose}
-        >
+          onPress={onClose}>
           <View style={styles.modalContent}>
             <Text style={styles.loginHeaderText}>Login</Text>
             <TextInput
@@ -37,7 +43,11 @@ const LoginModal = ({ isVisible, onClose }) => {
               secureTextEntry
               style={styles.input}
             />
-            <Button title="Login" onPress={handleLogin} style={styles.loginButton} />
+            <Button
+              title="Login"
+              onPress={handleLogin}
+              style={styles.loginButton}
+            />
             <Text style={styles.orText}>or</Text>
             <View style={styles.space} />
             <Button title=" Google" style={styles.googleButton} />
