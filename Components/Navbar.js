@@ -1,6 +1,6 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {NavigationContainer} from '@react-navigation/native';
+import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import HomeScreen from './HomeScreen';
 import ProviderService from './ProviderScreen/ProviderService';
@@ -8,21 +8,15 @@ import SingleService from './ProviderScreen/SingleService';
 import ProviderScreen from './ProviderScreen/ProviderScreen';
 import ProfileScreen from './ProfileScreen/ContactScreen';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {Button} from 'react-native';
+import {TextInput, View} from 'react-native';
+import CartItem from './CartScreen/CartItem';
 
 const StackNav = createNativeStackNavigator();
 
 const StackNavigation = () => {
   return (
-    <StackNav.Navigator>
-      <StackNav.Screen
-        name="eShop"
-        component={HomeScreen}
-        options={{
-          headerRight: () => <Button title="Sign in" />,
-          headerShown: false,
-        }}
-      />
+    <StackNav.Navigator screenOptions={{headerShown: false}}>
+      <StackNav.Screen name="eShop" component={HomeScreen} />
       <StackNav.Screen name="ProviderService" component={ProviderService} />
       <StackNav.Screen name="SingleService" component={SingleService} />
     </StackNav.Navigator>
@@ -36,31 +30,104 @@ const Navbar = () => {
     <NavigationContainer>
       <Tab.Navigator
         screenOptions={({route}) => ({
-          tabBarIcon: ({focused, color, size}) => {
-            let iconName;
-
-            if (route.name === 'Home') {
-              iconName = focused ? 'home' : 'home-outline';
-            } else if (route.name === 'Categories') {
-              iconName = focused ? 'grid' : 'grid-outline';
-            } else if (route.name === 'Profile') {
-              iconName = focused ? 'person' : 'person-outline';
-            }
-
-            return <Icon name={iconName} size={size} color={color} />;
-          },
           tabBarActiveTintColor: '#3498db',
           tabBarInactiveTintColor: 'gray',
-          tabBarShowLabel: false,
-          // headerShown: false,
           tabBarStyle: {
             backgroundColor: 'white',
             borderTopWidth: 1,
             borderTopColor: 'lightgray',
           },
+          tabBarIcon: ({focused, color, size}) => {
+            let iconName;
+            if (route?.name === 'eShop') {
+              iconName = focused ? 'home' : 'home-outline';
+            } else if (route?.name === 'My Cart') {
+              iconName = focused ? 'cart' : 'cart-outline';
+            } else if (route?.name === 'All Categories') {
+              iconName = focused ? 'grid' : 'grid-outline';
+            } else if (route?.name === 'Profile') {
+              iconName = focused ? 'person' : 'person-outline';
+            }
+
+            return <Icon name={iconName} size={size} color={color} />;
+          },
+          headerRight: () => {
+            if (route?.name === 'eShop') {
+              return (
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    marginRight: 10,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginVertical: 10,
+                    marginLeft: 20,
+                  }}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      borderRadius: 10,
+                      borderWidth: 1,
+                      borderColor: 'lightgray',
+                      paddingRight: 10,
+                    }}>
+                    <TextInput
+                      placeholder="Search"
+                      style={{
+                        flex: 1,
+                        padding: 8,
+                      }}
+                      onChangeText={text => console.log('Search:', text)}
+                    />
+                    <Icon
+                      name="search-outline"
+                      size={24}
+                      color="grey"
+                      onPress={() => console.log('Search icon pressed')}
+                    />
+                  </View>
+                  <Icon
+                    name="notifications-outline"
+                    size={24}
+                    color="grey"
+                    onPress={() => console.log('Bell icon pressed')}
+                    style={{marginRight: 0, marginLeft: 10}}
+                  />
+                </View>
+              );
+            } else {
+              return (
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    marginRight: 10,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginVertical: 10,
+                    marginLeft: 20,
+                  }}>
+                  <Icon
+                    name="search-outline"
+                    size={24}
+                    color="grey"
+                    onPress={() => console.log('Search icon pressed')}
+                  />
+                  <Icon
+                    name="notifications-outline"
+                    size={24}
+                    color="grey"
+                    onPress={() => console.log('Bell icon pressed')}
+                    style={{marginRight: 0, marginLeft: 10}}
+                  />
+                </View>
+              );
+            }
+          },
         })}>
-        <Tab.Screen name="Home" component={StackNavigation} />
-        <Tab.Screen name="Categories" component={ProviderScreen} />
+        <Tab.Screen name="eShop" component={StackNavigation} />
+        <Tab.Screen name="My Cart" component={CartItem} />
+        <Tab.Screen name="All Categories" component={ProviderScreen} />
         <Tab.Screen name="Profile" component={ProfileScreen} />
       </Tab.Navigator>
     </NavigationContainer>

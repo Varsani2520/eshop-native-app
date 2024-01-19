@@ -1,14 +1,14 @@
-import React from "react";
-import { ScrollView, View } from "react-native";
+import React from 'react';
+import {ScrollView,  View} from 'react-native';
 
-import HomeSwiper from "./HomeScreen/HomeSwiper";
-import HomeProvider from "./HomeScreen/HomeProvider";
-import SingleProvider from "./HomeScreen/SingleProvider";
+import HomeSwiper from './HomeScreen/HomeSwiper';
+import HomeProvider from './HomeScreen/HomeProvider';
+import SingleProvider from './HomeScreen/SingleProvider';
 
 const HomeScreen = () => {
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
-      <View style={{ flex: 1 }}>
+      <View style={{flex: 1}}>
         <HomeSwiper />
         <HomeProvider />
         <SingleProvider />
