@@ -1,8 +1,8 @@
 import React from "react";
 import { View, Text, Image, TouchableOpacity, Button } from "react-native";
-// import { addToCart } from "../redux/action";
 import { useDispatch } from "react-redux";
 import { styles } from "../../StyleSheet/style";
+import { addToCart } from "../Redux/action";
 
 const SingleService = ({ route }) => {
   const { propKey } = route.params;
@@ -11,7 +11,7 @@ const SingleService = ({ route }) => {
 
   const handleAddToCart = (item) => {
     console.log(item);
-    // dispatch(addToCart(item));
+    dispatch(addToCart(item));
   };
 
   const handleBuyNow = () => {

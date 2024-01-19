@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -8,8 +8,9 @@ import SingleService from './ProviderScreen/SingleService';
 import ProviderScreen from './ProviderScreen/ProviderScreen';
 import ProfileScreen from './ProfileScreen/ContactScreen';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {TextInput, View} from 'react-native';
+import {Button, TextInput, View} from 'react-native';
 import CartItem from './CartScreen/CartItem';
+import LoginModal from './LoginModal';
 
 const StackNav = createNativeStackNavigator();
 
@@ -25,9 +26,14 @@ const StackNavigation = () => {
 
 const Navbar = () => {
   const Tab = createBottomTabNavigator();
+  const [isLoginModalVisible, setLoginModalVisible] = useState(false);
 
+  const toggleLoginModal = () => {
+    setLoginModalVisible(!isLoginModalVisible);
+  };
   return (
     <NavigationContainer>
+      <LoginModal isVisible={isLoginModalVisible} onClose={toggleLoginModal} />
       <Tab.Navigator
         screenOptions={({route}) => ({
           tabBarActiveTintColor: '#3498db',
@@ -61,7 +67,7 @@ const Navbar = () => {
                     justifyContent: 'center',
                     alignItems: 'center',
                     marginVertical: 10,
-                    marginLeft: 20,
+                    marginLeft: 70,
                   }}>
                   <View
                     style={{
@@ -71,6 +77,7 @@ const Navbar = () => {
                       borderWidth: 1,
                       borderColor: 'lightgray',
                       paddingRight: 10,
+                      marginRight: 10,
                     }}>
                     <TextInput
                       placeholder="Search"
@@ -87,13 +94,7 @@ const Navbar = () => {
                       onPress={() => console.log('Search icon pressed')}
                     />
                   </View>
-                  <Icon
-                    name="notifications-outline"
-                    size={24}
-                    color="grey"
-                    onPress={() => console.log('Bell icon pressed')}
-                    style={{marginRight: 0, marginLeft: 10}}
-                  />
+                  <Button title="Login" onPress={toggleLoginModal} />
                 </View>
               );
             } else {
