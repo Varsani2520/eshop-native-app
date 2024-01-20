@@ -157,14 +157,15 @@ export const styles = StyleSheet.create({
   Cartimage: {
     width: 100,
     height: 130,
-    marginTop:10,
+    marginTop: 10,
     resizeMode: 'cover',
   },
   detailsContainer: {
     flex: 1,
     backgroundColor: 'white',
     // borderRadius: 10,
-    padding: 10,marginTop:10
+    padding: 10,
+    marginTop: 10,
   },
   price: {
     fontSize: 16,
@@ -207,5 +208,52 @@ export const styles = StyleSheet.create({
   CartbuttonText: {
     color: 'white',
     fontSize: 16,
+  },
+  // profile screen
+  Profilecontainer: {
+    flex: 1,
+    padding: 16,
+    backgroundColor: '#f0f0f0',
+  },
+  profileCard: {
+    alignItems: 'center',
+    marginBottom: 20,
+    backgroundColor: '#3498db', // White background color for the card
+    borderRadius: 10,
+    padding: 20,
+  },
+  avatarContainer: {
+    backgroundColor: '#e0e0e0', // Light gray background color for the avatar container
+    borderRadius: 60, // Half of the avatar size
+    padding: 10,
+  },
+  avatar: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+  },
+  userName: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginTop: 10,
+    color: 'white',
+  },
+  userUsername: {
+    fontSize: 14,
+    color: 'lightgray',
+    marginTop: 5,
+  },
+  actionIcons: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    backgroundColor: '#3498db',
+    borderRadius: 10,
+    padding: 5,
+  },
+  actionIcon: {
+    alignItems: 'center',
+  },
+  actionText: {
+    marginTop: 5,
   },
 });
