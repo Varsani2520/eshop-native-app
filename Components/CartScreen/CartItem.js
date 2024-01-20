@@ -60,6 +60,7 @@ const CartItem = () => {
         </View>
       ))}
       {/* Payment Button */}
+
       <TouchableOpacity
         style={styles.paymentButton}
         onPress={() => handlePayment()}>

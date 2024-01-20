@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -11,6 +11,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {Button, TextInput, View} from 'react-native';
 import CartItem from './CartScreen/CartItem';
 import LoginModal from './LoginModal';
+import {useSelector} from 'react-redux';
 
 const StackNav = createNativeStackNavigator();
 
@@ -25,12 +26,14 @@ const StackNavigation = () => {
 };
 
 const Navbar = () => {
+  const carts = useSelector(state => state.cart.cartItem);
   const Tab = createBottomTabNavigator();
   const [isLoginModalVisible, setLoginModalVisible] = useState(false);
 
   const toggleLoginModal = () => {
     setLoginModalVisible(!isLoginModalVisible);
   };
+  useEffect(() => {}, [carts]);
   return (
     <NavigationContainer>
       <LoginModal isVisible={isLoginModalVisible} onClose={toggleLoginModal} />
@@ -127,7 +130,13 @@ const Navbar = () => {
           },
         })}>
         <Tab.Screen name="eShop" component={StackNavigation} />
-        <Tab.Screen name="My Cart" component={CartItem} />
+        <Tab.Screen
+          name="My Cart"
+          component={CartItem}
+          options={{
+            tabBarBadge: carts.length > 0 ? carts.length.toString() : null,
+          }}
+        />
         <Tab.Screen name="All Categories" component={ProviderScreen} />
         <Tab.Screen name="Profile" component={ProfileScreen} />
       </Tab.Navigator>
