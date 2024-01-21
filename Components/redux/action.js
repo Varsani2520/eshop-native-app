@@ -5,6 +5,9 @@ import {
   CLEAR_FAV,
   DECREMENT_QUANTITY,
   INCREMENT_QUANTITY,
+  LOGIN_USER_FAILURE,
+  LOGIN_USER_SUCCESS,
+  LOGOUT_USER,
   REMOVE_TO_CART,
   REMOVE_TO_FAV,
 } from './constant';
@@ -55,5 +58,21 @@ export function removeToFav(item) {
   return {
     type: REMOVE_TO_FAV,
     payload: item,
+  };
+}
+// auth user
+export function loginUserSuccess(userData) {
+  return {
+    type: LOGIN_USER_SUCCESS,
+    payload: userData,
+  };
+}
+
+export function loginUserFailure() {
+  return {type: LOGIN_USER_FAILURE};
+}
+export function logoutuser() {
+  return {
+    type: LOGOUT_USER,
   };
 }

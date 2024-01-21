@@ -1,29 +1,53 @@
-// LoginModal.js
 import React, {useState} from 'react';
 import {
   View,
   Text,
   Modal,
   TextInput,
-  Button,
   TouchableOpacity,
   ImageBackground,
+  ToastAndroid,
 } from 'react-native';
-import {useNavigation} from '@react-navigation/native';
 import {styles} from '../StyleSheet/style';
+import {loginservice} from '../services/LoginService';
+import {loginUserFailure, loginUserSuccess} from './Redux/action';
+import {useDispatch} from 'react-redux';
+
+const showToast = message => {
+  ToastAndroid.showWithGravityAndOffset(
+    message,
+    ToastAndroid.LONG,
+    ToastAndroid.TOP,
+    25,
+    50,
+  );
+};
 
 const LoginModal = ({isVisible, onClose, onSignupPress}) => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState();
-  const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const [login, setLogin] = useState({
+    username: '',
+    password: '',
+  });
 
-  const handleLogin = () => {
-    console.log('Username:', username);
-    console.log('Password:', password);
-
-    // You can close the modal after handling the login
-    onClose();
-  };
+  async function handleSubmit() {
+    if (!login.username || !login.password) {
+      showToast('Please fill in all the fields');
+    }
+    try {
+      const response = await loginservice(login.username, login.password);
+      console.log('login detail', login);
+      // Cookies.set('user', true);
+      dispatch(loginUserSuccess(response));
+      showToast('Logged in successfully');
+      onClose();
+    } catch (error) {
+      showToast('Login failed');
+      // Cookies.set('user', false);
+      dispatch(loginUserFailure);
+      console.log(error);
+    }
+  }
 
   const handleSignupPress = () => {
     // Call the onSignupPress prop to show the signup modal and hide the login modal
@@ -36,46 +60,52 @@ const LoginModal = ({isVisible, onClose, onSignupPress}) => {
       animationType="slide"
       transparent
       onRequestClose={onClose}>
-      <View style={styles.modalContainer}>
-        <TouchableOpacity
-          style={styles.backdrop}
-          activeOpacity={1}
-          onPress={onClose}>
-          <ImageBackground
-            source={require('../Components/Images/backgroundImage.jpg')}
-            style={styles.backgroundImage}
-            resizeMode="cover">
-            <View style={styles.modalContent}>
-              <Text style={styles.loginHeaderText}>Login</Text>
-              <TextInput
-                placeholder="Username"
-                value={username}
-                onChangeText={text => setUsername(text)}
-                style={styles.input}
-              />
-              <TextInput
-                placeholder="Password"
-                value={password}
-                onChangeText={text => setPassword(text)}
-                secureTextEntry
-                style={styles.input}
-              />
-              <Button
-                title="Login"
-                onPress={handleLogin}
-                style={styles.loginButton}
-              />
-              <Text style={styles.orText}>or</Text>
-              <View style={styles.space} />
-              <TouchableOpacity onPress={handleSignupPress}>
-                <Text style={styles.orText}>
-                  Already have an account? Sign up
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </ImageBackground>
-        </TouchableOpacity>
-      </View>
+      <TouchableOpacity
+        style={styles.backdrop}
+        activeOpacity={1}
+        onPress={onClose}>
+        <ImageBackground
+          source={require('../Components/Images/backgroundImage.jpg')}
+          style={styles.backgroundImage}
+          resizeMode="cover">
+          <View style={styles.modalContent}>
+            <Text style={styles.loginHeaderText}>Login</Text>
+            <TextInput
+              placeholder="Username"
+              onChangeText={text =>
+                setLogin({
+                  ...login,
+                  username: text,
+                })
+              }
+              value={login.username}
+              style={styles.input}
+            />
+            <TextInput
+              placeholder="Password"
+              onChangeText={text =>
+                setLogin({
+                  ...login,
+                  password: text,
+                })
+              }
+              value={login.password}
+              secureTextEntry
+              style={styles.input}
+            />
+            <TouchableOpacity style={styles.loginButton} onPress={handleSubmit}>
+              <Text style={styles.buttonText}>Login</Text>
+            </TouchableOpacity>
+            <Text style={styles.orText}>or</Text>
+            <View style={styles.space} />
+            <TouchableOpacity onPress={handleSignupPress}>
+              <Text style={styles.orText}>
+                Already have an account? Sign up
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </ImageBackground>
+      </TouchableOpacity>
     </Modal>
   );
 };
