@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   View,
   Text,
@@ -8,6 +8,7 @@ import {
   ImageBackground,
   ToastAndroid,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {styles} from '../StyleSheet/style';
 import {loginservice} from '../services/LoginService';
 import {loginUserFailure, loginUserSuccess} from './Redux/action';
@@ -29,22 +30,38 @@ const LoginModal = ({isVisible, onClose, onSignupPress}) => {
     username: '',
     password: '',
   });
+  const usernameInputRef = useRef(null);
+  const passwordInputRef = useRef(null);
+
+  useEffect(() => {
+    if (isVisible) {
+      // Focus on the username text input when the modal is opened
+      usernameInputRef.current.focus();
+    }
+  }, [isVisible]);
 
   async function handleSubmit() {
     if (!login.username || !login.password) {
       showToast('Please fill in all the fields');
+      return;
     }
+
     try {
       const response = await loginservice(login.username, login.password);
-      console.log('login detail', login);
-      // Cookies.set('user', true);
+
+      // Store user information in AsyncStorage
+      await AsyncStorage.setItem('user', JSON.stringify(response));
+
+      // Set a flag to indicate that the user is logged in
+      await AsyncStorage.setItem('isLoggedIn', 'true');
+
       dispatch(loginUserSuccess(response));
       showToast('Logged in successfully');
       onClose();
     } catch (error) {
       showToast('Login failed');
-      // Cookies.set('user', false);
       dispatch(loginUserFailure);
+      await AsyncStorage.setItem('isLoggedIn', 'false');
       console.log(error);
     }
   }
@@ -71,24 +88,16 @@ const LoginModal = ({isVisible, onClose, onSignupPress}) => {
           <View style={styles.modalContent}>
             <Text style={styles.loginHeaderText}>Login</Text>
             <TextInput
+              ref={usernameInputRef}
               placeholder="Username"
-              onChangeText={text =>
-                setLogin({
-                  ...login,
-                  username: text,
-                })
-              }
+              onChangeText={text => setLogin({...login, username: text})}
               value={login.username}
               style={styles.input}
             />
             <TextInput
+              ref={passwordInputRef}
               placeholder="Password"
-              onChangeText={text =>
-                setLogin({
-                  ...login,
-                  password: text,
-                })
-              }
+              onChangeText={text => setLogin({...login, password: text})}
               value={login.password}
               secureTextEntry
               style={styles.input}

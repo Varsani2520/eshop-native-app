@@ -8,7 +8,7 @@ import SingleService from './ProviderScreen/SingleService';
 import ProviderScreen from './ProviderScreen/ProviderScreen';
 import ProfileScreen from './ProfileScreen/ContactScreen';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {Button, Modal, TextInput, View} from 'react-native';
+import {Button, Modal, Text, TextInput, View} from 'react-native';
 import CartItem from './CartScreen/CartItem';
 import LoginModal from './LoginModal';
 import {useSelector} from 'react-redux';
@@ -19,7 +19,7 @@ const StackNav = createNativeStackNavigator();
 const StackNavigation = () => {
   return (
     <StackNav.Navigator screenOptions={{headerShown: false}}>
-      <StackNav.Screen name="eShop" component={HomeScreen} />
+      <StackNav.Screen name="Home" component={HomeScreen} />
       <StackNav.Screen name="ProviderService" component={ProviderService} />
       <StackNav.Screen name="SingleService" component={SingleService} />
     </StackNav.Navigator>
@@ -28,6 +28,7 @@ const StackNavigation = () => {
 
 const Navbar = () => {
   const carts = useSelector(state => state.cart.cartItem);
+  const user = useSelector(state => state.user.authUser);
   const Tab = createBottomTabNavigator();
   const [isLoginModalVisible, setLoginModalVisible] = useState(false);
   const [isSignupModalVisible, setSignupModalVisible] = useState(false);
@@ -135,7 +136,11 @@ const Navbar = () => {
                       onPress={() => console.log('Search icon pressed')}
                     />
                   </View>
-                  <Button title="Login" onPress={toggleLoginModal} />
+                  {user ? (
+                    <Icon name="profile-circle" size={24} color="black" />
+                  ) : (
+                    <Button title="Login" onPress={toggleLoginModal} />
+                  )}
                 </View>
               );
             } else {
