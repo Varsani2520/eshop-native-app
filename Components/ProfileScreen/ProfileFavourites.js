@@ -13,7 +13,7 @@ const ProfileFavourites = () => {
   };
 
   return (
-    <ScrollView >
+    <ScrollView>
       <View style={styles.CardContainer}>
         {favourites.map(item => (
           <View
@@ -27,7 +27,11 @@ const ProfileFavourites = () => {
               <Text style={styles.price}>Price:{item.price}</Text>
               <TouchableOpacity
                 onPress={() => handleRemoveToCart(item)}
-                style={{backgroundColor: 'blue', padding: 5, borderRadius: 5}}>
+                style={{
+                  backgroundColor: '#3498db',
+                  padding: 5,
+                  borderRadius: 5,
+                }}>
                 <Text>Remove</Text>
               </TouchableOpacity>
             </View>

@@ -8,10 +8,11 @@ import SingleService from './ProviderScreen/SingleService';
 import ProviderScreen from './ProviderScreen/ProviderScreen';
 import ProfileScreen from './ProfileScreen/ContactScreen';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {Button, TextInput, View} from 'react-native';
+import {Button, Modal, TextInput, View} from 'react-native';
 import CartItem from './CartScreen/CartItem';
 import LoginModal from './LoginModal';
 import {useSelector} from 'react-redux';
+import SignupModal from './SignupModal';
 
 const StackNav = createNativeStackNavigator();
 
@@ -29,14 +30,51 @@ const Navbar = () => {
   const carts = useSelector(state => state.cart.cartItem);
   const Tab = createBottomTabNavigator();
   const [isLoginModalVisible, setLoginModalVisible] = useState(false);
+  const [isSignupModalVisible, setSignupModalVisible] = useState(false);
 
   const toggleLoginModal = () => {
     setLoginModalVisible(!isLoginModalVisible);
   };
+
+  const toggleSignupModal = () => {
+    setSignupModalVisible(!isSignupModalVisible);
+  };
+  const handleSignupPress = () => {
+    // Show the signup modal and hide the login modal
+    setLoginModalVisible(false);
+    setSignupModalVisible(true);
+  };
+  const handleLoginPress = () => {
+    // Show the signup modal and hide the login modal
+    setLoginModalVisible(true);
+    setSignupModalVisible(false);
+  };
   useEffect(() => {}, [carts]);
   return (
     <NavigationContainer>
-      <LoginModal isVisible={isLoginModalVisible} onClose={toggleLoginModal} />
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={isLoginModalVisible || isSignupModalVisible}
+        onRequestClose={() => {
+          setLoginModalVisible(false);
+          setSignupModalVisible(false);
+        }}>
+        {isLoginModalVisible ? (
+          <LoginModal
+            isVisible={isLoginModalVisible}
+            onClose={() => setLoginModalVisible(false)}
+            onSignupPress={handleSignupPress}
+          />
+        ) : null}
+        {isSignupModalVisible ? (
+          <SignupModal
+            isVisible={isSignupModalVisible}
+            onClose={() => setSignupModalVisible(false)}
+            onLoginPress={handleLoginPress}
+          />
+        ) : null}
+      </Modal>
       <Tab.Navigator
         screenOptions={({route}) => ({
           tabBarActiveTintColor: '#3498db',

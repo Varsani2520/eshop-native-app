@@ -256,4 +256,21 @@ export const styles = StyleSheet.create({
   actionText: {
     marginTop: 5,
   },
+  // modal
+  backdrop: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  modalContainer: {
+    borderRadius: 10,
+    flex: 1,
+  },
+  backgroundImage: {
+    resizeMode: 'cover',
+  },
+  modalContent: {
+    padding: 30,
+  },
 });
