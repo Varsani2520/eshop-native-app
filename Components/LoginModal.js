@@ -50,8 +50,11 @@ const LoginModal = ({isVisible, onClose, onSignupPress}) => {
       const response = await loginservice(login.username, login.password);
 
       // Store user information in AsyncStorage
-      await AsyncStorage.setItem('user', JSON.stringify(response));
-
+      const userResponse = await AsyncStorage.setItem(
+        'user',
+        JSON.stringify(response),
+      );
+      console.log(userResponse);
       // Set a flag to indicate that the user is logged in
       await AsyncStorage.setItem('isLoggedIn', 'true');
 

@@ -6,10 +6,11 @@ import ProfileFavourites from './ProfileFavourites';
 import ProfileBooking from './ProfileBooking';
 import ProfileNotifications from './ProfileNotifications';
 import ProfileDeleteAccount from './ProfileDeleteAccount';
+import { useSelector } from 'react-redux';
 
 const ProfileScreen = () => {
   const [selectedAction, setSelectedAction] = useState(null);
-
+  const user = useSelector((state) => state.user.authUser.data);
   const renderContent = () => {
     switch (selectedAction) {
       case 'Booking':
@@ -45,8 +46,11 @@ const ProfileScreen = () => {
             style={styles.avatar}
           />
         </View>
-        <Text style={styles.userName}>John Doe</Text>
-        <Text style={styles.userUsername}>@johndoe</Text>
+        
+        <Text style={styles.userName}>
+        {user ? user.name : "guest"}
+        </Text>
+        <Text style={styles.userUsername}>{user ? user.username : "guest"}</Text>
       </View>
 
       {/* Action Icons */}

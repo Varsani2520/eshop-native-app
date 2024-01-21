@@ -137,7 +137,7 @@ const Navbar = () => {
                     />
                   </View>
                   {user ? (
-                    <Icon name="profile-circle" size={24} color="black" />
+                    <Icon name="watch-outline" size={24} color="black" />
                   ) : (
                     <Button title="Login" onPress={toggleLoginModal} />
                   )}
