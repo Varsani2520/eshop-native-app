@@ -8,11 +8,12 @@ import SingleService from './ProviderScreen/SingleService';
 import ProviderScreen from './ProviderScreen/ProviderScreen';
 import ProfileScreen from './ProfileScreen/ContactScreen';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {Button, Modal, Text, TextInput, View} from 'react-native';
+import {Button, Image, Modal, Text, TextInput, View} from 'react-native';
 import CartItem from './CartScreen/CartItem';
 import LoginModal from './LoginModal';
 import {useSelector} from 'react-redux';
 import SignupModal from './SignupModal';
+import {styles} from '../StyleSheet/style';
 
 const StackNav = createNativeStackNavigator();
 
@@ -28,7 +29,8 @@ const StackNavigation = () => {
 
 const Navbar = () => {
   const carts = useSelector(state => state.cart.cartItem);
-  const user = useSelector(state => state.user.authUser);
+  const user = useSelector(state => state.user.authUser.data);
+  console.log(user);
   const Tab = createBottomTabNavigator();
   const [isLoginModalVisible, setLoginModalVisible] = useState(false);
   const [isSignupModalVisible, setSignupModalVisible] = useState(false);
@@ -137,7 +139,14 @@ const Navbar = () => {
                     />
                   </View>
                   {user ? (
-                    <Icon name="watch-outline" size={24} color="black" />
+                    <View style={styles.NavavatarContainer}>
+                      <Image
+                        source={{
+                          uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvJaoIeJQU_V9rL_ZII61whWyqSFbmMgTgwQ&usqp=CAU',
+                        }}
+                        style={styles.Navavatar}
+                      />
+                    </View>
                   ) : (
                     <Button title="Login" onPress={toggleLoginModal} />
                   )}
@@ -178,6 +187,12 @@ const Navbar = () => {
           component={CartItem}
           options={{
             tabBarBadge: carts.length > 0 ? carts.length.toString() : null,
+            tabBarBadgeStyle: {
+              backgroundColor: 'green',
+              position: 'absolute',
+              top: '-30',
+              left: 5,
+            },
           }}
         />
         <Tab.Screen name="All Categories" component={ProviderScreen} />

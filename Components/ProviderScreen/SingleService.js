@@ -1,47 +1,43 @@
-import React from "react";
-import { View, Text, Image, TouchableOpacity, Button } from "react-native";
-import { useDispatch } from "react-redux";
-import { styles } from "../../StyleSheet/style";
-import { addToCart } from "../Redux/action";
+import React, {useState} from 'react';
+import {View, Text, Image, TouchableOpacity, Button} from 'react-native';
+import {useDispatch} from 'react-redux';
+import {styles} from '../../StyleSheet/style';
+import {addToCart} from '../Redux/action';
+import ToastMessage from '../ToastMessage';
 
-const SingleService = ({ route }) => {
-  const { propKey } = route.params;
+const SingleService = ({route}) => {
+  const [toastMessage, setToastMessage] = useState('');
+  const {propKey} = route.params;
   const item = propKey;
   const dispatch = useDispatch();
 
-  const handleAddToCart = (item) => {
+  const handleAddToCart = item => {
     console.log(item);
     dispatch(addToCart(item));
+    setToastMessage('added item successfully');
   };
 
   const handleBuyNow = () => {
     // Implement your logic for buying now
-    console.log("Buy Now");
-  };
-
-  const showToast = (message) => {
-    Toast.show({
-      text1: message,
-      position: "bottom",
-      type: "success",
-    });
+    console.log('Buy Now');
   };
 
   return (
     <View style={styles.CardContainer}>
+      <ToastMessage message={toastMessage} />
       <View style={styles.contentContainer}>
         <View style={styles.imageContainer}>
-          <Image source={{ uri: propKey.img }} style={styles.mediumcardImage} />
+          <Image source={{uri: propKey.img}} style={styles.mediumcardImage} />
         </View>
       </View>
       <View style={styles.descriptionContainer}>
         <Text style={styles.headerText}>{propKey.name}</Text>
         <Text>{propKey.description}</Text>
-        <Text>{"\n"}</Text>
+        <Text>{'\n'}</Text>
         <Text>Price: ${propKey.price}</Text>
         <Text>Offer: {propKey.offer}% off</Text>
         <Text>
-          Rating: {propKey.rating}{" "}
+          Rating: {propKey.rating}{' '}
           {/* <FontAwesome name="star" size={16} color="gold" /> */}
         </Text>
       </View>

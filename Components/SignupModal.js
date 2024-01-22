@@ -6,21 +6,13 @@ import {
   TextInput,
   TouchableOpacity,
   ImageBackground,
-  ToastAndroid,
 } from 'react-native';
 import {styles} from '../StyleSheet/style';
-
-const showToast = message => {
-  ToastAndroid.showWithGravityAndOffset(
-    message,
-    ToastAndroid.LONG,
-    ToastAndroid.TOP,
-    25,
-    50,
-  );
-};
+import {signupservice} from '../services/SignupService';
+import ToastMessage from './ToastMessage';
 
 const SignupModal = ({isVisible, onClose, onLoginPress}) => {
+  const [toastMessage, setToastMessage] = useState('');
   const [signup, setSignup] = useState({
     username: '',
     password: '',
@@ -35,17 +27,22 @@ const SignupModal = ({isVisible, onClose, onLoginPress}) => {
       !signup.name ||
       !signup.address
     ) {
-      showToast('Please fill in all fields');
+      setToastMessage('Please fill in all fields');
       return;
     }
 
     try {
-      console.log('Signup details:', signup);
-      showToast('Account Created Successfully');
-      onClose();
+      const response = await signupservice(
+        signup.username,
+        signup.password,
+        signup.name,
+        signup.address,
+      );
+      console.log('signup user', response);
+      setToastMessage('Account Created Successfully');
     } catch (error) {
-      showToast('Failed to Create Account');
-      console.error(error);
+      setToastMessage('Failed to Create Account');
+      console.log(error);
     }
   }
 
@@ -59,6 +56,7 @@ const SignupModal = ({isVisible, onClose, onLoginPress}) => {
       animationType="slide"
       transparent
       onRequestClose={onClose}>
+      <ToastMessage message={toastMessage} />
       <TouchableOpacity
         style={styles.backdrop}
         activeOpacity={1}

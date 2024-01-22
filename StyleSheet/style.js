@@ -273,4 +273,17 @@ export const styles = StyleSheet.create({
   modalContent: {
     padding: 30,
   },
+  // nav avatar
+  Navavatar: {
+    width: 30,
+    height: 30,
+    borderRadius: 100,
+  },
+  NavavatarContainer: {
+    backgroundColor: '#3498db', // Light gray background color for the avatar container
+    borderRadius: 60, // Half of the avatar size
+    padding: 2,
+  },
+  // bottom tab badge
+  
 });

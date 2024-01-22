@@ -1,8 +1,12 @@
-import {httpAxios} from '../httpAxios';
+import { httpAxios } from "../httpAxios";
 
 export async function loginservice(username, password) {
-  const result = await httpAxios
-    .post('api/login', {username: username, password: password})
-    .then(response => response.data);
-  return result;
+  try {
+    const response = await httpAxios.post('api/login', {username, password});
+    console.log('HTTP Response:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('HTTP Error:', error);
+    throw new Error(`Login failed: ${error.message}`);
+  }
 }

@@ -1,15 +1,16 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, TouchableOpacity, Image} from 'react-native';
+import {View, Text, TouchableOpacity, Image, ToastAndroid} from 'react-native';
 import {styles} from '../../StyleSheet/style';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useDispatch, useSelector} from 'react-redux';
 import {addToFav, removeToFav} from '../Redux/action';
+import ToastMessage from '../ToastMessage';
 
 const CardFirst = ({item, handleCardPress}) => {
   const [isHeartFilled, setHeartFilled] = useState(false);
   const dispatch = useDispatch();
   const favourites = useSelector(state => state.like.favouriteItem);
-
+  const [toastMessage, setToastMessage] = useState('');
   useEffect(() => {
     // Check if the item is in the favorites list
     const isItemInFavorites = favourites.some(
@@ -22,8 +23,10 @@ const CardFirst = ({item, handleCardPress}) => {
     setHeartFilled(!isHeartFilled);
     if (isHeartFilled) {
       dispatch(removeToFav(item));
+      setToastMessage('Removed from favorites');
     } else {
       dispatch(addToFav(item));
+      setToastMessage('Added to favorites');
     }
   };
 
@@ -33,6 +36,7 @@ const CardFirst = ({item, handleCardPress}) => {
 
   return (
     <View style={styles.imageContainer}>
+      <ToastMessage message={toastMessage} />
       <TouchableOpacity onPress={handleImagePress}>
         <Image source={{uri: item.img}} style={styles.mediumcardImage} />
       </TouchableOpacity>

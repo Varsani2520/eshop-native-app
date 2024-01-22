@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, FlatList, Image, TouchableOpacity } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { HomeProviderServiceFirst } from "../../services/HomeProviderService";
-import CardFirst from "./CardFirst";
-import { styles } from "../../StyleSheet/style";
+import React, {useEffect, useState} from 'react';
+import {View, Text, FlatList, Image, TouchableOpacity} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import {HomeProviderServiceFirst} from '../../services/HomeProviderService';
+import CardFirst from './CardFirst';
+import {styles} from '../../StyleSheet/style';
 
 const SingleProvider = () => {
   const [service, setService] = useState([]);
@@ -11,10 +11,10 @@ const SingleProvider = () => {
 
   async function fetchServiceData() {
     try {
-      const result = await HomeProviderServiceFirst({ id: 1 });
+      const result = await HomeProviderServiceFirst({id: 1});
       setService(result);
     } catch (error) {
-      console.error("Error fetching service data:", error);
+      console.error('Error fetching service data:', error);
     }
   }
 
@@ -22,8 +22,8 @@ const SingleProvider = () => {
     fetchServiceData();
   }, []);
 
-  const handleCardPress = (item) => {
-    navigation.navigate("SingleService", { propKey: item });
+  const handleCardPress = item => {
+    navigation.navigate('SingleService', {propKey: item});
   };
 
   return (
@@ -32,11 +32,11 @@ const SingleProvider = () => {
       <FlatList
         horizontal
         data={service}
-        renderItem={({ item }) => {
+        renderItem={({item}) => {
           if (item.provider_id == 1)
             return <CardFirst item={item} handleCardPress={handleCardPress} />;
         }}
-        keyExtractor={(item) => item.images}
+        keyExtractor={item => item.images}
         showsHorizontalScrollIndicator={false}
       />
 
@@ -45,11 +45,11 @@ const SingleProvider = () => {
       <FlatList
         horizontal
         data={service}
-        renderItem={({ item }) => {
+        renderItem={({item}) => {
           if (item.provider_id == 2)
             return <CardFirst item={item} handleCardPress={handleCardPress} />;
         }}
-        keyExtractor={(item) => item.images}
+        keyExtractor={item => item.images}
         showsHorizontalScrollIndicator={false}
       />
       {/* 3rd */}
@@ -57,11 +57,11 @@ const SingleProvider = () => {
       <FlatList
         horizontal
         data={service}
-        renderItem={({ item }) => {
+        renderItem={({item}) => {
           if (item.provider_id == 4)
             return <CardFirst item={item} handleCardPress={handleCardPress} />;
         }}
-        keyExtractor={(item) => item.id}
+        keyExtractor={item => item.id}
         showsHorizontalScrollIndicator={false}
       />
 
@@ -70,11 +70,11 @@ const SingleProvider = () => {
       <FlatList
         horizontal
         data={service}
-        renderItem={({ item }) => {
+        renderItem={({item}) => {
           if (item.provider_id == 3)
             return <CardFirst item={item} handleCardPress={handleCardPress} />;
         }}
-        keyExtractor={(item) => item.id}
+        keyExtractor={item => item.id}
         showsHorizontalScrollIndicator={false}
       />
 
@@ -83,11 +83,11 @@ const SingleProvider = () => {
       <FlatList
         horizontal
         data={service}
-        renderItem={({ item }) => {
+        renderItem={({item}) => {
           if (item.provider_id == 4)
             return <CardFirst item={item} handleCardPress={handleCardPress} />;
         }}
-        keyExtractor={(item) => item.id}
+        keyExtractor={item => item.id}
         showsHorizontalScrollIndicator={false}
       />
     </View>
