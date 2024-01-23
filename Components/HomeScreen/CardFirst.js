@@ -6,7 +6,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {addToFav, removeToFav} from '../Redux/action';
 import ToastMessage from '../ToastMessage';
 
-const CardFirst = ({item, handleCardPress}) => {
+const CardFirst = ({item, handleCardPress, updateLoginStatus, isLoggedIn}) => {
   const [isHeartFilled, setHeartFilled] = useState(false);
   const dispatch = useDispatch();
   const favourites = useSelector(state => state.like.favouriteItem);
@@ -20,6 +20,10 @@ const CardFirst = ({item, handleCardPress}) => {
   }, [favourites, item]);
 
   const handleHeartPress = () => {
+    if (!isLoggedIn) {
+      setToastMessage('Please login first');
+      return;
+    }
     setHeartFilled(!isHeartFilled);
     if (isHeartFilled) {
       dispatch(removeToFav(item));

@@ -14,6 +14,8 @@ import LoginModal from './LoginModal';
 import {useSelector} from 'react-redux';
 import SignupModal from './SignupModal';
 import {styles} from '../StyleSheet/style';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import ToastMessage from './ToastMessage';
 
 const StackNav = createNativeStackNavigator();
 
@@ -26,10 +28,14 @@ const StackNavigation = () => {
     </StackNav.Navigator>
   );
 };
+const ProfileTab = () => <LoginModal />;
 
+const CartTab = () => <LoginModal />;
 const Navbar = () => {
   const carts = useSelector(state => state.cart.cartItem);
-  const user = useSelector(state => state.user.authUser.data);
+  const [isLoggedIn, setLoggedIn] = useState(false);
+  const user = useSelector(state => (state.user.message = 'true'));
+
   console.log(user);
   const Tab = createBottomTabNavigator();
   const [isLoginModalVisible, setLoginModalVisible] = useState(false);
@@ -52,7 +58,18 @@ const Navbar = () => {
     setLoginModalVisible(true);
     setSignupModalVisible(false);
   };
-  useEffect(() => {}, [carts]);
+  useEffect(() => {
+    const checkLoginStatus = async () => {
+      try {
+        const responseUser = await AsyncStorage.getItem('isLoggedIn');
+        setLoggedIn(responseUser === 'true');
+      } catch (error) {
+        console.error('Error retrieving login status:', error);
+      }
+    };
+
+    checkLoginStatus();
+  }, [carts]);
   return (
     <NavigationContainer>
       <Modal
@@ -138,7 +155,7 @@ const Navbar = () => {
                       onPress={() => console.log('Search icon pressed')}
                     />
                   </View>
-                  {user ? (
+                  {isLoggedIn && user ? (
                     <View style={styles.NavavatarContainer}>
                       <Image
                         source={{
@@ -182,21 +199,50 @@ const Navbar = () => {
           },
         })}>
         <Tab.Screen name="eShop" component={StackNavigation} />
-        <Tab.Screen
-          name="My Cart"
-          component={CartItem}
-          options={{
-            tabBarBadge: carts.length > 0 ? carts.length.toString() : null,
-            tabBarBadgeStyle: {
-              backgroundColor: 'green',
-              position: 'absolute',
-              top: '-30',
-              left: 5,
-            },
-          }}
-        />
+        {isLoggedIn && user ? (
+          <Tab.Screen
+            name="My Cart"
+            component={CartItem}
+            options={{
+              tabBarBadge: carts.length > 0 ? carts.length.toString() : null,
+              tabBarBadgeStyle: {
+                backgroundColor: 'green',
+                position: 'absolute',
+                top: '-30',
+                left: 5,
+              },
+            }}
+          />
+        ) : (
+          <Tab.Screen
+            name="My Cart"
+            component={() => <CartTab />}
+            listeners={({navigation, route}) => ({
+              tabPress: e => {
+                // Prevent default action and show login modal
+                e.preventDefault();
+                setLoginModalVisible(true);
+              },
+            })}
+          />
+        )}
+
         <Tab.Screen name="All Categories" component={ProviderScreen} />
-        <Tab.Screen name="Profile" component={ProfileScreen} />
+        {isLoggedIn && user ? (
+          <Tab.Screen name="Profile" component={ProfileScreen} />
+        ) : (
+          <Tab.Screen
+            name="Profile"
+            component={() => <ProfileTab />}
+            listeners={({navigation, route}) => ({
+              tabPress: e => {
+                // Prevent default action and show login modal
+                e.preventDefault();
+                setLoginModalVisible(true);
+              },
+            })}
+          />
+        )}
       </Tab.Navigator>
     </NavigationContainer>
   );

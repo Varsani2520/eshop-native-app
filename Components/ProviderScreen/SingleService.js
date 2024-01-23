@@ -5,14 +5,17 @@ import {styles} from '../../StyleSheet/style';
 import {addToCart} from '../Redux/action';
 import ToastMessage from '../ToastMessage';
 
-const SingleService = ({route}) => {
+const SingleService = ({route, isLoggedIn}) => {
   const [toastMessage, setToastMessage] = useState('');
   const {propKey} = route.params;
   const item = propKey;
   const dispatch = useDispatch();
 
   const handleAddToCart = item => {
-    console.log(item);
+    if (!isLoggedIn) {
+      setToastMessage('Please Login first');
+      return;
+    }
     dispatch(addToCart(item));
     setToastMessage('added item successfully');
   };

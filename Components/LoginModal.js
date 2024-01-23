@@ -30,21 +30,20 @@ const LoginModal = ({isVisible, onClose, onSignupPress}) => {
 
     try {
       const response = await loginservice(login.username, login.password);
-      // // Store user information in AsyncStorage
-      // const userResponse = await AsyncStorage.setItem(
-      //   'user',
-      //   JSON.stringify(response),
-      // );
-      // console.log(userResponse);
-      // // Set a flag to indicate that the user is logged in
-      // await AsyncStorage.setItem('isLoggedIn', 'true');
+      // Store user information in AsyncStorage
+       await AsyncStorage.setItem(
+        'user',
+        JSON.stringify(response),
+      );
+      // Set a flag to indicate that the user is logged in
+      await AsyncStorage.setItem('isLoggedIn', 'true');
       dispatch(loginUserSuccess(response));
       setToastMessage('Logged in successfully');
       onClose();
     } catch (error) {
       setToastMessage('Login failed');
       dispatch(loginUserFailure);
-      // await AsyncStorage.setItem('isLoggedIn', 'false');
+      await AsyncStorage.setItem('isLoggedIn', 'false');
       console.log(error);
     }
   }
