@@ -8,7 +8,7 @@ import SingleService from './ProviderScreen/SingleService';
 import ProviderScreen from './ProviderScreen/ProviderScreen';
 import ProfileScreen from './ProfileScreen/ContactScreen';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {Button, Image, Modal, Text, TextInput, View} from 'react-native';
+import {Button, Image, Modal, TextInput, View} from 'react-native';
 import CartItem from './CartScreen/CartItem';
 import LoginModal from './LoginModal';
 import {useSelector} from 'react-redux';
