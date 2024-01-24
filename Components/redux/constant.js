@@ -12,3 +12,6 @@ export const CLEAR_FAV = 'clear_FAV';
 export const LOGIN_USER_SUCCESS = 'login_user_SUCCESS';
 export const LOGIN_USER_FAILURE = 'login_user_FAILURE';
 export const LOGOUT_USER = 'logout_USER';
+
+// payment 
+export const PAYMENT_DETAIL='payment_DETAIL'

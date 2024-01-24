@@ -5,9 +5,9 @@ import {styles} from '../../StyleSheet/style';
 import {removeToFav} from '../Redux/action';
 
 const ProfileFavourites = () => {
-  
+  const dispatch = useDispatch();
   const favourites = useSelector(state => state.like.favouriteItem);
-   // Use useDispatch to get the dispatch function
+  // Use useDispatch to get the dispatch function
 
   const handleRemoveToCart = item => {
     dispatch(removeToFav(item));

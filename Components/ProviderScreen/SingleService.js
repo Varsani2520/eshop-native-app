@@ -1,30 +1,45 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, Image, TouchableOpacity, Button} from 'react-native';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {styles} from '../../StyleSheet/style';
 import {addToCart} from '../Redux/action';
 import ToastMessage from '../ToastMessage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const SingleService = ({route, isLoggedIn}) => {
+const SingleService = ({route}) => {
   const [toastMessage, setToastMessage] = useState('');
+  const [isLoggedIn, setLoggedIn] = useState(false);
+
+  const user = useSelector(state => (state.user.message = 'true'));
   const {propKey} = route.params;
   const item = propKey;
   const dispatch = useDispatch();
 
   const handleAddToCart = item => {
-    if (!isLoggedIn) {
-      setToastMessage('Please Login first');
+    if (isLoggedIn && user) {
+      setToastMessage('added to success');
+      dispatch(addToCart(item));
+    } else {
+      setToastMessage('please login first');
       return;
     }
-    dispatch(addToCart(item));
-    setToastMessage('added item successfully');
   };
-
   const handleBuyNow = () => {
     // Implement your logic for buying now
     console.log('Buy Now');
   };
+  useEffect(() => {
+    const checkLoginStatus = async () => {
+      try {
+        const responseUser = await AsyncStorage.getItem('isLoggedIn');
+        setLoggedIn(responseUser === 'true');
+      } catch (error) {
+        console.error('Error retrieving login status:', error);
+      }
+    };
 
+    checkLoginStatus();
+  }, []);
   return (
     <View style={styles.CardContainer}>
       <ToastMessage message={toastMessage} />

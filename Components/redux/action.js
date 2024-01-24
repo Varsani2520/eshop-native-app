@@ -8,6 +8,7 @@ import {
   LOGIN_USER_FAILURE,
   LOGIN_USER_SUCCESS,
   LOGOUT_USER,
+  PAYMENT_DETAIL,
   REMOVE_TO_CART,
   REMOVE_TO_FAV,
 } from './constant';
@@ -76,3 +77,6 @@ export function logoutuser() {
     type: LOGOUT_USER,
   };
 }
+
+// payment
+export const setpaymentdetaail = () => ({type: PAYMENT_DETAIL});

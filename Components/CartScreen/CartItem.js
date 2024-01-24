@@ -1,12 +1,14 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {styles} from '../../StyleSheet/style';
 import {
+  clearCart,
   decrementQuantityItem,
   incrementQuantityItem,
   removeToCart,
 } from '../Redux/action';
+import ToastMessage from '../ToastMessage';
 
 const CartItem = () => {
   const carts = useSelector(state => state.cart.cartItem);
@@ -23,7 +25,13 @@ const CartItem = () => {
   const handleDecrement = item => {
     dispatch(decrementQuantityItem(item));
   };
-
+  const [totalPrice, setTotalPrice] = useState(0);
+  const handlePaymentSuccess = paymentDetails => {
+    <ToastMessage message={'Payment successful'} />;
+    dispatch({type: 'SET_PAYMENT_DETAILS', payload: paymentDetails});
+    // router.push('/pages/address');
+    dispatch(clearCart());
+  };
   return (
     <View style={styles.CartimageContainer}>
       {carts.map(item => (
