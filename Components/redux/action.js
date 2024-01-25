@@ -79,4 +79,4 @@ export function logoutuser() {
 }
 
 // payment
-export const setpaymentdetaail = () => ({type: PAYMENT_DETAIL});
+export const setpaymentdetail = () => ({type: PAYMENT_DETAIL});
