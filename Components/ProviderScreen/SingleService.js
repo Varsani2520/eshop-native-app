@@ -5,22 +5,21 @@ import {styles} from '../../StyleSheet/style';
 import {addToCart} from '../Redux/action';
 import ToastMessage from '../ToastMessage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import useCartActions from '../utils';
 
 const SingleService = ({route}) => {
-  const [toastMessage, setToastMessage] = useState('');
   const [isLoggedIn, setLoggedIn] = useState(false);
-
-  const user = useSelector(state => (state.user.message = 'true'));
+  const {user} = useCartActions();
   const {propKey} = route.params;
   const item = propKey;
   const dispatch = useDispatch();
 
   const handleAddToCart = item => {
     if (isLoggedIn && user) {
-      setToastMessage('added to success');
+      <ToastMessage message={'added to success'} />;
       dispatch(addToCart(item));
     } else {
-      setToastMessage('please login first');
+      <ToastMessage message={'Please login first'} />;
       return;
     }
   };

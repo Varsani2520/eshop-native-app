@@ -1,20 +1,18 @@
-import { View, FlatList, Image, Dimensions } from "react-native";
-import React from "react";
-import { swiperImage } from "../SwiperImages";
-import { styles } from "../../StyleSheet/style";
+import {View, FlatList, Image, Dimensions} from 'react-native';
+import React from 'react';
+import {swiperImage} from '../Images/SwiperImages';
+import {styles} from '../../StyleSheet/style';
 const HomeSwiper = () => {
-  const { width, height } = Dimensions.get("window");
-
   return (
     <View>
       <FlatList
         data={swiperImage}
-        renderItem={({ item }) => (
+        renderItem={({item}) => (
           <View style={styles.imageContainer}>
-            <Image source={{ uri: item.image }} style={styles.image} />
+            <Image source={{uri: item.image}} style={styles.image} />
           </View>
         )}
-        keyExtractor={(item) => item.id}
+        keyExtractor={item => item.id}
         horizontal
         showsHorizontalScrollIndicator={false}
       />

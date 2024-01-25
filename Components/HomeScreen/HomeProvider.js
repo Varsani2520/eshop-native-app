@@ -6,14 +6,14 @@ import {
   Image,
   TouchableOpacity,
   ActivityIndicator,
-} from "react-native";
-import React, { useEffect, useState } from "react";
+} from 'react-native';
+import React, {useEffect, useState} from 'react';
 
-import { useNavigation } from "@react-navigation/native";
-import { HomeService } from "../../services/HomeService";
-import { styles } from "../../StyleSheet/style";
+import {useNavigation} from '@react-navigation/native';
+import {HomeService} from '../../services/HomeService';
+import {styles} from '../../StyleSheet/style';
 
-const HomeProvider = ({  horizontal = true }) => {
+const HomeProvider = ({horizontal = true}) => {
   const [provider, setProvider] = useState([]);
   const navigation = useNavigation();
   const [loading, setLoading] = useState(true);
@@ -24,7 +24,7 @@ const HomeProvider = ({  horizontal = true }) => {
       const result = await HomeService();
       setProvider(result);
     } catch (error) {
-      setError("Error fetching data");
+      setError('Error fetching data');
     } finally {
       setLoading(false);
     }
@@ -43,21 +43,19 @@ const HomeProvider = ({  horizontal = true }) => {
       ) : (
         <FlatList
           data={provider}
-          
-          renderItem={({ item }) => (
+          renderItem={({item}) => (
             <View style={styles.imageContainer}>
               <TouchableOpacity
                 style={styles.CardContainer}
                 onPress={() =>
-                  navigation.navigate("ProviderService", {
+                  navigation.navigate('ProviderService', {
                     providerId: item.provider_id,
                     providerTitle: item.title,
                   })
-                }
-              >
+                }>
                 <View style={styles.imageContainer}>
                   <Image
-                    source={{ uri: item.image }}
+                    source={{uri: item.image}}
                     style={styles.mediumcardImage}
                   />
                   <View style={styles.cardTitleContainer}>
@@ -68,7 +66,7 @@ const HomeProvider = ({  horizontal = true }) => {
             </View>
           )}
           horizontal={horizontal}
-          keyExtractor={(item) => item.id}
+          keyExtractor={item => item.id}
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
         />

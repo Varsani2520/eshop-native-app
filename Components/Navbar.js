@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import HomeScreen from './HomeScreen';
+import HomeScreen from './HomeScreen/HomeScreen';
 import ProviderService from './ProviderScreen/ProviderService';
 import SingleService from './ProviderScreen/SingleService';
 import ProviderScreen from './ProviderScreen/ProviderScreen';
@@ -10,16 +10,15 @@ import ProfileScreen from './ProfileScreen/ContactScreen';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {Button as RNButton, Image, Modal, TextInput, View} from 'react-native';
 import CartItem from './CartScreen/CartItem';
-import LoginModal from './LoginModal';
-import {useSelector} from 'react-redux';
-import SignupModal from './SignupModal';
 import {styles} from '../StyleSheet/style';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import ToastMessage from './ToastMessage';
-
+import useCartActions from './utils';
+import HomeNav from './Models/HomeNav';
+import LoginModal from './Models/LoginModal';
+import SignupModal from './Models/SignupModal';
 const StackNav = createNativeStackNavigator();
 
-const StackNavigation = ({setLoginModalVisible, setSignupModalVisible}) => {
+const StackNavigation = () => {
   return (
     <StackNav.Navigator screenOptions={{headerShown: false}}>
       <StackNav.Screen name="Home" component={HomeScreen} />
@@ -34,9 +33,9 @@ const CartTab = () => <LoginModal />;
 const Navbar = () => {
   const [loginModalVisible, setLoginModalVisible] = useState(false);
   const [signupModalVisible, setSignupModalVisible] = useState(false);
-  const carts = useSelector(state => state.cart.cartItem);
+  const {carts, user} = useCartActions();
   const [isLoggedIn, setLoggedIn] = useState(false);
-  const user = useSelector(state => (state.user.message = 'true'));
+
   const Tab = createBottomTabNavigator();
 
   useEffect(() => {
@@ -140,31 +139,7 @@ const Navbar = () => {
                 </View>
               );
             } else {
-              return (
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    marginRight: 10,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    marginVertical: 10,
-                    marginLeft: 20,
-                  }}>
-                  <Icon
-                    name="search-outline"
-                    size={24}
-                    color="grey"
-                    onPress={() => console.log('Search icon pressed')}
-                  />
-                  <Icon
-                    name="notifications-outline"
-                    size={24}
-                    color="grey"
-                    onPress={() => console.log('Bell icon pressed')}
-                    style={{marginRight: 0, marginLeft: 10}}
-                  />
-                </View>
-              );
+              return <HomeNav />;
             }
           },
         })}>
@@ -189,7 +164,6 @@ const Navbar = () => {
             component={() => <CartTab />}
             listeners={({navigation, route}) => ({
               tabPress: e => {
-                // Prevent default action and show login modal
                 e.preventDefault();
                 setLoginModalVisible(true);
               },
@@ -206,7 +180,6 @@ const Navbar = () => {
             component={() => <ProfileTab />}
             listeners={({navigation, route}) => ({
               tabPress: e => {
-                // Prevent default action and show login modal
                 e.preventDefault();
                 setLoginModalVisible(true);
               },

@@ -2,36 +2,19 @@ import React, {useState} from 'react';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {styles} from '../../StyleSheet/style';
-import {
-  clearCart,
-  decrementQuantityItem,
-  incrementQuantityItem,
-  removeToCart,
-} from '../Redux/action';
+import {clearCart} from '../Redux/action';
 import ToastMessage from '../ToastMessage';
+import useCartActions from '../utils';
 
 const CartItem = () => {
-  const carts = useSelector(state => state.cart.cartItem);
-  const dispatch = useDispatch();
+  const {
+    handleRemoveToCart,
+    handleIncrement,
+    handleDecrement,
+    carts,
+    handlePayment,
+  } = useCartActions();
 
-  const handleRemoveToCart = item => {
-    dispatch(removeToCart(item));
-  };
-
-  const handleIncrement = item => {
-    dispatch(incrementQuantityItem(item));
-  };
-
-  const handleDecrement = item => {
-    dispatch(decrementQuantityItem(item));
-  };
-  const [totalPrice, setTotalPrice] = useState(0);
-  const handlePaymentSuccess = paymentDetails => {
-    <ToastMessage message={'Payment successful'} />;
-    dispatch({type: 'SET_PAYMENT_DETAILS', payload: paymentDetails});
-    // router.push('/pages/address');
-    dispatch(clearCart());
-  };
   return (
     <View style={styles.CartimageContainer}>
       {carts.map(item => (

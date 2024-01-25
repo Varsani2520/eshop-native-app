@@ -7,9 +7,9 @@ import {
   TouchableOpacity,
   ImageBackground,
 } from 'react-native';
-import {styles} from '../StyleSheet/style';
-import {signupservice} from '../services/SignupService';
-import ToastMessage from './ToastMessage';
+import {styles} from '../../StyleSheet/style';
+import {signupservice} from '../../services/SignupService';
+import ToastMessage from '../ToastMessage';
 
 const SignupModal = ({LoginModelOepn, setSignupModal}) => {
   const [toastMessage, setToastMessage] = useState('');
@@ -56,7 +56,7 @@ const SignupModal = ({LoginModelOepn, setSignupModal}) => {
       <ToastMessage message={toastMessage} />
       <View style={styles.backdrop}>
         <ImageBackground
-          source={require('../Components/Images/backgroundImage.jpg')}
+          source={require('../Images/backgroundImage.jpg')}
           style={styles.backgroundImage}
           resizeMode="cover">
           <View style={styles.modalContent}>

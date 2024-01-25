@@ -8,11 +8,11 @@ import {
   ImageBackground,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {styles} from '../StyleSheet/style';
-import {loginservice} from '../services/LoginService';
-import {loginUserFailure, loginUserSuccess} from './Redux/action';
+import {styles} from '../../StyleSheet/style';
+import {loginservice} from '../../services/LoginService';
+import {loginUserFailure, loginUserSuccess} from '../Redux/action';
 import {useDispatch} from 'react-redux';
-import ToastMessage from './ToastMessage';
+import ToastMessage from '../ToastMessage';
 
 const LoginModal = ({SignupOpen, setLoginModel}) => {
   const dispatch = useDispatch();
@@ -36,7 +36,7 @@ const LoginModal = ({SignupOpen, setLoginModel}) => {
       await AsyncStorage.setItem('isLoggedIn', 'true');
       dispatch(loginUserSuccess(response));
       setToastMessage('Logged in successfully');
-      // setLoginModel(false);
+      setLoginModel(false);
     } catch (error) {
       setToastMessage('Login failed');
       dispatch(loginUserFailure);
@@ -50,12 +50,13 @@ const LoginModal = ({SignupOpen, setLoginModel}) => {
       visible={true}
       animationType="slide"
       transparent
+      onRequestClose={() => setLoginModel(false)} // Add this line
       // onDismiss={() => setLoginModel(false)}
     >
       <ToastMessage message={toastMessage} />
       <View style={styles.backdrop}>
         <ImageBackground
-          source={require('../Components/Images/backgroundImage.jpg')}
+          source={require('../Images/backgroundImage.jpg')}
           style={styles.backgroundImage}
           resizeMode="cover">
           <View style={styles.modalContent}>
