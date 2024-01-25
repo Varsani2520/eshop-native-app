@@ -1,6 +1,7 @@
 // utils.js
 import {useDispatch, useSelector} from 'react-redux';
 import {
+  clearCart,
   decrementQuantityItem,
   incrementQuantityItem,
   removeToCart,

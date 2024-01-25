@@ -13,10 +13,12 @@ import {loginservice} from '../../services/LoginService';
 import {loginUserFailure, loginUserSuccess} from '../Redux/action';
 import {useDispatch} from 'react-redux';
 import ToastMessage from '../ToastMessage';
+import {useNavigation} from '@react-navigation/native';
 
 const LoginModal = ({SignupOpen, setLoginModel}) => {
   const dispatch = useDispatch();
   const [toastMessage, setToastMessage] = useState('');
+  const navigation = useNavigation();
   const [login, setLogin] = useState({
     username: '',
     password: '',
@@ -37,6 +39,7 @@ const LoginModal = ({SignupOpen, setLoginModel}) => {
       dispatch(loginUserSuccess(response));
       setToastMessage('Logged in successfully');
       setLoginModel(false);
+      navigation.navigate('eShop');
     } catch (error) {
       setToastMessage('Login failed');
       dispatch(loginUserFailure);

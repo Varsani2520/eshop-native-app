@@ -1,10 +1,11 @@
 import React from 'react';
-import {View, Text, Button, ToastAndroid} from 'react-native';
+import {View, Text, Button, ToastAndroid, Image} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {clearCart, clearFav, logoutUser, logoutuser} from '../Redux/action';
 import {deleteAccountService} from '../../services/SignupService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ToastMessage from '../ToastMessage';
+import {styles} from '../../StyleSheet/style';
 
 const ProfileDeleteAccount = ({navigation}) => {
   const dispatch = useDispatch();
@@ -21,9 +22,7 @@ const ProfileDeleteAccount = ({navigation}) => {
 
       // Set 'isLoggedIn' to 'false' in AsyncStorage
       await AsyncStorage.setItem('isLoggedIn', 'false');
-
-      // Show toast message and navigate to the home screen
-      ToastAndroid.show('Account deleted successfully', ToastAndroid.SHORT);
+      <ToastMessage message={'Account delete Succefully'} />;
       navigation?.navigate('eShop');
     } catch (error) {
       console.log(error);
@@ -31,9 +30,20 @@ const ProfileDeleteAccount = ({navigation}) => {
   }
 
   return (
-    <View>
-      <Text>ProfileDeleteAccount</Text>
-      <Button title="Delete Account" onPress={deleteAccount} />
+    <View style={styles.CardContainer}>
+      <View style={styles.profileCard}>
+        <View style={styles.avatarContainer}>
+          <Image
+            source={{
+              uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvJaoIeJQU_V9rL_ZII61whWyqSFbmMgTgwQ&usqp=CAU',
+            }}
+            style={styles.avatar}
+          />
+        </View>
+
+        <Text>Are you sure to Delete this Account?</Text>
+        <Button title="Delete Account" onPress={deleteAccount} />
+      </View>
     </View>
   );
 };

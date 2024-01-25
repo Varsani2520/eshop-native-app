@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, Image, TouchableOpacity, Button} from 'react-native';
+import {View, Text, Image, TouchableOpacity} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {styles} from '../../StyleSheet/style';
 import {addToCart} from '../Redux/action';
@@ -9,6 +9,7 @@ import useCartActions from '../utils';
 
 const SingleService = ({route}) => {
   const [isLoggedIn, setLoggedIn] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
   const {user} = useCartActions();
   const {propKey} = route.params;
   const item = propKey;
@@ -16,17 +17,19 @@ const SingleService = ({route}) => {
 
   const handleAddToCart = item => {
     if (isLoggedIn && user) {
-      <ToastMessage message={'added to success'} />;
+      setToastMessage('Added to cart successfully');
       dispatch(addToCart(item));
     } else {
-      <ToastMessage message={'Please login first'} />;
+      setToastMessage('Please login first');
       return;
     }
   };
+
   const handleBuyNow = () => {
     // Implement your logic for buying now
     console.log('Buy Now');
   };
+
   useEffect(() => {
     const checkLoginStatus = async () => {
       try {
@@ -41,7 +44,6 @@ const SingleService = ({route}) => {
   }, []);
   return (
     <View style={styles.CardContainer}>
-      <ToastMessage message={toastMessage} />
       <View style={styles.contentContainer}>
         <View style={styles.imageContainer}>
           <Image source={{uri: propKey.img}} style={styles.mediumcardImage} />
@@ -67,6 +69,7 @@ const SingleService = ({route}) => {
           <Text style={styles.buttonText}>Buy Now</Text>
         </TouchableOpacity>
       </View>
+      {toastMessage ? <ToastMessage message={toastMessage} /> : null}
     </View>
   );
 };
