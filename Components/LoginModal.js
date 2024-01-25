@@ -14,7 +14,7 @@ import {loginUserFailure, loginUserSuccess} from './Redux/action';
 import {useDispatch} from 'react-redux';
 import ToastMessage from './ToastMessage';
 
-const LoginModal = ({isVisible, onClose, onSignupPress}) => {
+const LoginModal = ({SignupOpen, setLoginModel}) => {
   const dispatch = useDispatch();
   const [toastMessage, setToastMessage] = useState('');
   const [login, setLogin] = useState({
@@ -31,15 +31,12 @@ const LoginModal = ({isVisible, onClose, onSignupPress}) => {
     try {
       const response = await loginservice(login.username, login.password);
       // Store user information in AsyncStorage
-       await AsyncStorage.setItem(
-        'user',
-        JSON.stringify(response),
-      );
+      await AsyncStorage.setItem('user', JSON.stringify(response));
       // Set a flag to indicate that the user is logged in
       await AsyncStorage.setItem('isLoggedIn', 'true');
       dispatch(loginUserSuccess(response));
       setToastMessage('Logged in successfully');
-      onClose();
+      // setLoginModel(false);
     } catch (error) {
       setToastMessage('Login failed');
       dispatch(loginUserFailure);
@@ -48,22 +45,15 @@ const LoginModal = ({isVisible, onClose, onSignupPress}) => {
     }
   }
 
-  const handleSignupPress = () => {
-    // Call the onSignupPress prop to show the signup modal and hide the login modal
-    onSignupPress();
-  };
-
   return (
     <Modal
-      visible={isVisible}
+      visible={true}
       animationType="slide"
       transparent
-      onRequestClose={onClose}>
+      // onDismiss={() => setLoginModel(false)}
+    >
       <ToastMessage message={toastMessage} />
-      <TouchableOpacity
-        style={styles.backdrop}
-        activeOpacity={1}
-        onPress={onClose}>
+      <View style={styles.backdrop}>
         <ImageBackground
           source={require('../Components/Images/backgroundImage.jpg')}
           style={styles.backgroundImage}
@@ -83,19 +73,21 @@ const LoginModal = ({isVisible, onClose, onSignupPress}) => {
               secureTextEntry
               style={styles.input}
             />
-            <TouchableOpacity style={styles.loginButton} onPress={handleSubmit}>
+            <TouchableOpacity
+              style={styles.loginButton}
+              onPress={() => handleSubmit()}>
               <Text style={styles.buttonText}>Login</Text>
             </TouchableOpacity>
             <Text style={styles.orText}>or</Text>
             <View style={styles.space} />
-            <TouchableOpacity onPress={handleSignupPress}>
+            <TouchableOpacity onPress={() => SignupOpen()}>
               <Text style={styles.orText}>
                 Already have an account? Sign up
               </Text>
             </TouchableOpacity>
           </View>
         </ImageBackground>
-      </TouchableOpacity>
+      </View>
     </Modal>
   );
 };

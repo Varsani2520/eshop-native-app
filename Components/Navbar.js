@@ -8,7 +8,7 @@ import SingleService from './ProviderScreen/SingleService';
 import ProviderScreen from './ProviderScreen/ProviderScreen';
 import ProfileScreen from './ProfileScreen/ContactScreen';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {Button, Image, Modal, TextInput, View} from 'react-native';
+import {Button as RNButton, Image, Modal, TextInput, View} from 'react-native';
 import CartItem from './CartScreen/CartItem';
 import LoginModal from './LoginModal';
 import {useSelector} from 'react-redux';
@@ -19,7 +19,7 @@ import ToastMessage from './ToastMessage';
 
 const StackNav = createNativeStackNavigator();
 
-const StackNavigation = () => {
+const StackNavigation = ({setLoginModalVisible, setSignupModalVisible}) => {
   return (
     <StackNav.Navigator screenOptions={{headerShown: false}}>
       <StackNav.Screen name="Home" component={HomeScreen} />
@@ -32,32 +32,13 @@ const ProfileTab = () => <LoginModal />;
 
 const CartTab = () => <LoginModal />;
 const Navbar = () => {
+  const [loginModalVisible, setLoginModalVisible] = useState(false);
+  const [signupModalVisible, setSignupModalVisible] = useState(false);
   const carts = useSelector(state => state.cart.cartItem);
   const [isLoggedIn, setLoggedIn] = useState(false);
   const user = useSelector(state => (state.user.message = 'true'));
-
-  console.log(user);
   const Tab = createBottomTabNavigator();
-  const [isLoginModalVisible, setLoginModalVisible] = useState(false);
-  const [isSignupModalVisible, setSignupModalVisible] = useState(false);
 
-  const toggleLoginModal = () => {
-    setLoginModalVisible(!isLoginModalVisible);
-  };
-
-  const toggleSignupModal = () => {
-    setSignupModalVisible(!isSignupModalVisible);
-  };
-  const handleSignupPress = () => {
-    // Show the signup modal and hide the login modal
-    setLoginModalVisible(false);
-    setSignupModalVisible(true);
-  };
-  const handleLoginPress = () => {
-    // Show the signup modal and hide the login modal
-    setLoginModalVisible(true);
-    setSignupModalVisible(false);
-  };
   useEffect(() => {
     const checkLoginStatus = async () => {
       try {
@@ -70,31 +51,17 @@ const Navbar = () => {
 
     checkLoginStatus();
   }, [carts]);
+
+  const loginModelOpen = () => {
+    setSignupModalVisible(false);
+    setLoginModalVisible(true);
+  };
+  const signupModelOpen = () => {
+    setLoginModalVisible(false);
+    setSignupModalVisible(true);
+  };
   return (
     <NavigationContainer>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={isLoginModalVisible || isSignupModalVisible}
-        onRequestClose={() => {
-          setLoginModalVisible(false);
-          setSignupModalVisible(false);
-        }}>
-        {isLoginModalVisible ? (
-          <LoginModal
-            isVisible={isLoginModalVisible}
-            onClose={() => setLoginModalVisible(false)}
-            onSignupPress={handleSignupPress}
-          />
-        ) : null}
-        {isSignupModalVisible ? (
-          <SignupModal
-            isVisible={isSignupModalVisible}
-            onClose={() => setSignupModalVisible(false)}
-            onLoginPress={handleLoginPress}
-          />
-        ) : null}
-      </Modal>
       <Tab.Navigator
         screenOptions={({route}) => ({
           tabBarActiveTintColor: '#3498db',
@@ -165,7 +132,10 @@ const Navbar = () => {
                       />
                     </View>
                   ) : (
-                    <Button title="Login" onPress={toggleLoginModal} />
+                    <RNButton
+                      title="LOGIN"
+                      onPress={() => setLoginModalVisible(true)}
+                    />
                   )}
                 </View>
               );
@@ -244,6 +214,19 @@ const Navbar = () => {
           />
         )}
       </Tab.Navigator>
+      {loginModalVisible && (
+        <LoginModal
+          SignupOpen={() => signupModelOpen()}
+          setLoginModel={() => loginModelOpen()}
+        />
+      )}
+
+      {signupModalVisible && (
+        <SignupModal
+          LoginModelOepn={() => loginModelOpen()}
+          setSignupModal={() => signupModelOpen()}
+        />
+      )}
     </NavigationContainer>
   );
 };

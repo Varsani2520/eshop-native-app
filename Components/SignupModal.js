@@ -11,7 +11,7 @@ import {styles} from '../StyleSheet/style';
 import {signupservice} from '../services/SignupService';
 import ToastMessage from './ToastMessage';
 
-const SignupModal = ({isVisible, onClose, onLoginPress}) => {
+const SignupModal = ({LoginModelOepn, setSignupModal}) => {
   const [toastMessage, setToastMessage] = useState('');
   const [signup, setSignup] = useState({
     username: '',
@@ -40,27 +40,21 @@ const SignupModal = ({isVisible, onClose, onLoginPress}) => {
       );
       console.log('signup user', response);
       setToastMessage('Account Created Successfully');
+      setSignupModal(false);
     } catch (error) {
       setToastMessage('Failed to Create Account');
       console.log(error);
     }
   }
 
-  const handleLogin = () => {
-    onLoginPress();
-  };
-
   return (
     <Modal
-      visible={isVisible}
+      visible={true}
       animationType="slide"
       transparent
-      onRequestClose={onClose}>
+      onDismiss={() => setSignupModal(false)}>
       <ToastMessage message={toastMessage} />
-      <TouchableOpacity
-        style={styles.backdrop}
-        activeOpacity={1}
-        onPress={onClose}>
+      <View style={styles.backdrop}>
         <ImageBackground
           source={require('../Components/Images/backgroundImage.jpg')}
           style={styles.backgroundImage}
@@ -92,16 +86,18 @@ const SignupModal = ({isVisible, onClose, onLoginPress}) => {
               value={signup.address}
               style={styles.input}
             />
-            <TouchableOpacity style={styles.loginButton} onPress={handleSubmit}>
+            <TouchableOpacity
+              style={styles.loginButton}
+              onPress={() => handleSubmit()}>
               <Text style={styles.buttonText}>Signup</Text>
             </TouchableOpacity>
             <Text style={styles.orText}>or</Text>
-            <TouchableOpacity onPress={handleLogin}>
+            <TouchableOpacity onPress={() => LoginModelOepn()}>
               <Text style={styles.orText}>Already have an account? Login</Text>
             </TouchableOpacity>
           </View>
         </ImageBackground>
-      </TouchableOpacity>
+      </View>
     </Modal>
   );
 };
