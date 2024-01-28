@@ -11,8 +11,9 @@ import {styles} from '../../StyleSheet/style';
 import Icon from 'react-native-vector-icons/Ionicons'; // Import your vector icon library
 import ToastMessage from '../ToastMessage';
 import {useNavigation} from '@react-navigation/native';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {clearCart} from '../Redux/action';
+import {summaryServices} from '../../services/SummaryService';
 
 const PaymentModal = ({visible, onClose, totalPrice, onPaymentSubmit}) => {
   const dispatch = useDispatch();
@@ -22,12 +23,22 @@ const PaymentModal = ({visible, onClose, totalPrice, onPaymentSubmit}) => {
   const [email, setEmail] = useState('');
   const [isFormValid, setIsFormValid] = useState(true); // Track form validity
   const navigation = useNavigation();
-
+  const carts = useSelector(state => state.cart.cartItem);
+  const tokens = useSelector(state => state.user.authUser.data.token);
+  const date = new Date();
   const validateEmail = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email.toLowerCase());
   };
 
+  async function paymentSuccess() {
+    try {
+      const response = await summaryServices(tokens, carts, 'pending', date);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  }
   const handleSubmit = () => {
     if (!cardNumber || !expiryDate || !cvc || !email) {
       // If any field is empty, show a toast message
@@ -64,6 +75,7 @@ const PaymentModal = ({visible, onClose, totalPrice, onPaymentSubmit}) => {
     dispatch(clearCart());
     // Show payment success toast
     setIsFormValid(true);
+    paymentSuccess(tokens);
     setTimeout(() => {
       navigation.navigate('eShop');
     }, 2000);

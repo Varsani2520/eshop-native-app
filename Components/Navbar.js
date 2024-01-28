@@ -122,7 +122,7 @@ const Navbar = () => {
                       onPress={() => console.log('Search icon pressed')}
                     />
                   </View>
-                  {isLoggedIn && user == 'true' ? (
+                  {isLoggedIn ? (
                     <View style={styles.NavavatarContainer}>
                       <Image
                         source={{
