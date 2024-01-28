@@ -18,7 +18,7 @@ import LoginModal from './Models/LoginModal';
 import SignupModal from './Models/SignupModal';
 import {useSelector} from 'react-redux';
 const StackNav = createNativeStackNavigator();
-
+const Tab = createBottomTabNavigator();
 const StackNavigation = () => {
   return (
     <StackNav.Navigator screenOptions={{headerShown: false}}>
@@ -32,25 +32,11 @@ const ProfileTab = () => <LoginModal />;
 
 const CartTab = () => <LoginModal />;
 const Navbar = () => {
+  let isLoggedIn = useSelector(state => state.user.isAuthenticated);
+  const user = useSelector(state => state.user.user);
+  const carts = useSelector(state => state.cart.cartItem);
   const [loginModalVisible, setLoginModalVisible] = useState(false);
   const [signupModalVisible, setSignupModalVisible] = useState(false);
-  const {carts, user} = useCartActions();
-  const [isLoggedIn, setLoggedIn] = useState(false);
-
-  const Tab = createBottomTabNavigator();
-
-  useEffect(() => {
-    const checkLoginStatus = async () => {
-      try {
-        const responseUser = await AsyncStorage.getItem('isLoggedIn');
-        setLoggedIn(responseUser === 'true');
-      } catch (error) {
-        console.error('Error retrieving login status:', error);
-      }
-    };
-
-    checkLoginStatus();
-  }, [carts]);
 
   const loginModelOpen = () => {
     setSignupModalVisible(false);
@@ -145,7 +131,7 @@ const Navbar = () => {
           },
         })}>
         <Tab.Screen name="eShop" component={StackNavigation} />
-        {isLoggedIn && user ? (
+        {isLoggedIn ? (
           <Tab.Screen
             name="My Cart"
             component={CartItem}
@@ -173,7 +159,7 @@ const Navbar = () => {
         )}
 
         <Tab.Screen name="All Categories" component={ProviderScreen} />
-        {isLoggedIn && user ? (
+        {isLoggedIn ? (
           <Tab.Screen name="Profile" component={ProfileScreen} />
         ) : (
           <Tab.Screen
