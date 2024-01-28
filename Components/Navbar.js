@@ -11,8 +11,6 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {Button as RNButton, Image, Modal, TextInput, View} from 'react-native';
 import CartItem from './CartScreen/CartItem';
 import {styles} from '../StyleSheet/style';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import useCartActions from './utils';
 import HomeNav from './Models/HomeNav';
 import LoginModal from './Models/LoginModal';
 import SignupModal from './Models/SignupModal';
