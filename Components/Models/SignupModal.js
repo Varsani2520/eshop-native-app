@@ -10,9 +10,11 @@ import {
 import {styles} from '../../StyleSheet/style';
 import {signupservice} from '../../services/SignupService';
 import ToastMessage from '../ToastMessage';
+import {useNavigation} from '@react-navigation/native';
 
-const SignupModal = ({LoginModelOepn, setSignupModal}) => {
+const SignupModal = ({LoginModelOepn, onClose, setSignupModal}) => {
   const [toastMessage, setToastMessage] = useState('');
+  const navigation = useNavigation();
   const [signup, setSignup] = useState({
     username: '',
     password: '',
@@ -38,9 +40,14 @@ const SignupModal = ({LoginModelOepn, setSignupModal}) => {
         signup.name,
         signup.address,
       );
-      console.log('signup user', response);
       setToastMessage('Account Created Successfully');
       setSignupModal(false);
+
+      // Close the modal and navigate to another screen
+      onClose();
+      setTimeout(() => {
+        navigation.navigate('eShop'); // Replace 'eShop' with the desired screen name
+      }, 2000);
     } catch (error) {
       setToastMessage('Failed to Create Account');
       console.log(error);

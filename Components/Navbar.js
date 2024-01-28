@@ -16,6 +16,7 @@ import useCartActions from './utils';
 import HomeNav from './Models/HomeNav';
 import LoginModal from './Models/LoginModal';
 import SignupModal from './Models/SignupModal';
+import {useSelector} from 'react-redux';
 const StackNav = createNativeStackNavigator();
 
 const StackNavigation = () => {
@@ -121,7 +122,7 @@ const Navbar = () => {
                       onPress={() => console.log('Search icon pressed')}
                     />
                   </View>
-                  {isLoggedIn && user ? (
+                  {isLoggedIn && user == 'true' ? (
                     <View style={styles.NavavatarContainer}>
                       <Image
                         source={{
@@ -191,12 +192,14 @@ const Navbar = () => {
         <LoginModal
           SignupOpen={() => signupModelOpen()}
           setLoginModel={() => loginModelOpen()}
+          onClose={() => setLoginModalVisible(false)}
         />
       )}
 
       {signupModalVisible && (
         <SignupModal
           LoginModelOepn={() => loginModelOpen()}
+          onClose={() => setSignupModalVisible(false)}
           setSignupModal={() => signupModelOpen()}
         />
       )}

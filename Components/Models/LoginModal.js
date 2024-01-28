@@ -15,7 +15,7 @@ import {useDispatch} from 'react-redux';
 import ToastMessage from '../ToastMessage';
 import {useNavigation} from '@react-navigation/native';
 
-const LoginModal = ({SignupOpen, setLoginModel}) => {
+const LoginModal = ({SignupOpen, setLoginModel, onClose}) => {
   const dispatch = useDispatch();
   const [toastMessage, setToastMessage] = useState('');
   const navigation = useNavigation();
@@ -39,7 +39,10 @@ const LoginModal = ({SignupOpen, setLoginModel}) => {
       dispatch(loginUserSuccess(response));
       setToastMessage('Logged in successfully');
       setLoginModel(false);
-      navigation.navigate('eShop');
+      onClose();
+      setTimeout(() => {
+        navigation.navigate('eShop'); // Replace 'eShop' with the desired screen name
+      }, 2000);
     } catch (error) {
       setToastMessage('Login failed');
       dispatch(loginUserFailure);
@@ -49,13 +52,7 @@ const LoginModal = ({SignupOpen, setLoginModel}) => {
   }
 
   return (
-    <Modal
-      visible={true}
-      animationType="slide"
-      transparent
-      onRequestClose={() => setLoginModel(false)} // Add this line
-      // onDismiss={() => setLoginModel(false)}
-    >
+    <Modal visible={true} animationType="slide" transparent>
       <ToastMessage message={toastMessage} />
       <View style={styles.backdrop}>
         <ImageBackground

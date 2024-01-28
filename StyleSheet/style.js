@@ -285,5 +285,27 @@ export const styles = StyleSheet.create({
     padding: 2,
   },
   // bottom tab badge
-  
+
+  // payment modal
+  rowContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between', // Adjust as needed
+    marginTop: 10, // Adjust as needed
+  },
+
+  PaymentInput: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    borderRadius: 5,
+    marginBottom: 10,
+    paddingHorizontal: 10,
+    backgroundColor: 'white',
+  },
+
+  expiryCVCInput: {
+    flex: 1, // Distribute available space evenly among the two inputs
+    marginRight: 10, // Adjust as needed
+    borderBottomWidth: 1, // Underline effect
+  },
 });

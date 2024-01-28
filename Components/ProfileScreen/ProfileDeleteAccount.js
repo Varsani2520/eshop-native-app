@@ -6,11 +6,12 @@ import {deleteAccountService} from '../../services/SignupService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ToastMessage from '../ToastMessage';
 import {styles} from '../../StyleSheet/style';
+import {useNavigation} from '@react-navigation/native';
 
-const ProfileDeleteAccount = ({navigation}) => {
+const ProfileDeleteAccount = () => {
   const dispatch = useDispatch();
   const user = useSelector(state => state.user.authUser.data);
-
+  const navigation = useNavigation();
   async function deleteAccount() {
     try {
       const response = await deleteAccountService(user?.token);
@@ -23,7 +24,7 @@ const ProfileDeleteAccount = ({navigation}) => {
       // Set 'isLoggedIn' to 'false' in AsyncStorage
       await AsyncStorage.setItem('isLoggedIn', 'false');
       <ToastMessage message={'Account delete Succefully'} />;
-      navigation?.navigate('eShop');
+      navigation.navigate('eShop');
     } catch (error) {
       console.log(error);
     }

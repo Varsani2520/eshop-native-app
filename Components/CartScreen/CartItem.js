@@ -5,6 +5,7 @@ import {styles} from '../../StyleSheet/style';
 import {clearCart} from '../Redux/action';
 import ToastMessage from '../ToastMessage';
 import useCartActions from '../utils';
+import PaymentModal from './PaymentModal';
 
 const CartItem = () => {
   const {
@@ -15,6 +16,18 @@ const CartItem = () => {
     handlePayment,
   } = useCartActions();
 
+  const [isPaymentModalVisible, setPaymentModalVisible] = useState(false);
+
+  const handlePaymentSubmit = paymentDetails => {
+    // Handle the submission of payment details
+    // You can add your logic here
+    console.log('Payment details:', paymentDetails);
+  };
+
+  // calculate total price
+  const totalPrice = carts.reduce((total, item) => {
+    return total + item.price * item.quantity;
+  }, 0);
   return (
     <View style={styles.CartimageContainer}>
       {carts.map(item => (
@@ -54,9 +67,17 @@ const CartItem = () => {
 
       <TouchableOpacity
         style={styles.paymentButton}
-        onPress={() => handlePayment()}>
+        onPress={() => setPaymentModalVisible(true)}>
         <Text style={styles.buttonText}>Proceed to Payment</Text>
       </TouchableOpacity>
+
+      {/* payment modal */}
+      <PaymentModal
+        visible={isPaymentModalVisible}
+        onClose={() => setPaymentModalVisible(false)}
+        onPaymentSubmit={handlePaymentSubmit}
+        totalPrice={totalPrice}
+      />
     </View>
   );
 };
