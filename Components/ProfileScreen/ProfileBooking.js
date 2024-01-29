@@ -5,7 +5,7 @@ import {useSelector} from 'react-redux';
 import {styles} from '../../StyleSheet/style';
 
 const ProfileBooking = ({totalPrice}) => {
-  const tokens = useSelector(state => state.user.authUser.data.token);
+  const tokens = useSelector(state => state.user.authUser);
   const [booking, setBooking] = useState([]);
 
   async function Booking() {

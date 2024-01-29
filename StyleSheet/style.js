@@ -263,10 +263,10 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 20,
   },
-  modalContainer: {
-    borderRadius: 10,
-    flex: 1,
-  },
+  // modalContainer: {
+  //   borderRadius: 10,
+  //   flex: 1,
+  // },
   backgroundImage: {
     resizeMode: 'cover',
   },

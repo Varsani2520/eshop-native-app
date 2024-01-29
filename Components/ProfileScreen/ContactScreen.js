@@ -11,6 +11,7 @@ import {useSelector} from 'react-redux';
 const ProfileScreen = () => {
   const [selectedAction, setSelectedAction] = useState(null);
   const user = useSelector(state => state.user.authUser.data);
+  console.log(user);
   const renderContent = () => {
     switch (selectedAction) {
       case 'Booking':
