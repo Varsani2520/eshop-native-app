@@ -1,44 +1,71 @@
-import {View, Text, Image, TouchableOpacity, ScrollView} from 'react-native';
-import React from 'react';
-import {useSelector, useDispatch} from 'react-redux'; // Import useDispatch
+import {View, Text, Image, ScrollView, ActivityIndicator} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {useSelector} from 'react-redux';
 import {styles} from '../../StyleSheet/style';
-import {removeToFav} from '../Redux/action';
+import {getFaviorites} from '../../services/getFavourite';
 
 const ProfileFavourites = () => {
-  const dispatch = useDispatch();
-  const favourites = useSelector(state => state.like.favouriteItem);
-  // Use useDispatch to get the dispatch function
+  const tokens = useSelector(state => state.user.user.data.token);
+  const [fav, setFav] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const handleRemoveToCart = item => {
-    dispatch(removeToFav(item));
+  const favs = async function getFav() {
+    try {
+      const response = await getFaviorites(tokens);
+      setFav(response);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false); // Set loading to false when data is fetched
+    }
   };
+
+  useEffect(() => {
+    favs();
+  }, []);
 
   return (
     <ScrollView>
-      <View style={styles.CardContainer}>
-        {favourites.map(item => (
-          <View
-            style={[styles.itemContainer, {backgroundColor: '#f2f2f2'}]}
-            key={item.name}>
-            <View style={styles.imageContainer}>
-              <Image style={styles.Cartimage} source={{uri: item.img}} />
-            </View>
-            <View style={styles.detailsContainer}>
-              <Text>{item.name}</Text>
-              <Text style={styles.price}>Price:{item.price}</Text>
-              <TouchableOpacity
-                onPress={() => handleRemoveToCart(item)}
-                style={{
-                  backgroundColor: '#3498db',
-                  padding: 5,
-                  borderRadius: 5,
-                }}>
-                <Text>Remove</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        ))}
-      </View>
+      {loading ? ( // Display activity loader while loading
+        <ActivityIndicator size="large" color="#3498db" style={styles.loader} />
+      ) : (
+        <View style={styles.CardContainer}>
+          {fav.length === 0 ? (
+            <Text>No Favourite Available</Text>
+          ) : (
+            fav.map(response => {
+              return (
+                <React.Fragment key={response.someUniqueKey}>
+                  {response.data.map(singleFav => {
+                    return (
+                      <View
+                        style={[
+                          styles.itemContainer,
+                          {backgroundColor: '#f2f2f2'},
+                        ]}
+                        key={singleFav.id}>
+                        <View style={styles.imageContainer}>
+                          <Image
+                            style={styles.Cartimage}
+                            source={{uri: singleFav.img}}
+                          />
+                        </View>
+                        <View style={styles.detailsContainer}>
+                          <Text>{singleFav.name}</Text>
+                          <Text>{singleFav.rating}</Text>
+                          <Text style={styles.price}>
+                            Price: {singleFav.price}
+                          </Text>
+                        </View>
+                      </View>
+                    );
+                  })}
+                </React.Fragment>
+              );
+            })
+          )}
+        </View>
+      )}
     </ScrollView>
   );
 };

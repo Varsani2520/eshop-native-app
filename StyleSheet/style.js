@@ -7,6 +7,7 @@ export const styles = StyleSheet.create({
     margin: 10,
     borderRadius: 10,
   },
+ 
   image: {
     width: width - 20,
     height: height / 3,

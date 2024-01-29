@@ -5,27 +5,15 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {useDispatch, useSelector} from 'react-redux';
 import {addToFav, removeToFav} from '../Redux/action';
 import ToastMessage from '../ToastMessage';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import {FavioriteService} from '../../services/get-favourite';
 const CardFirst = ({item, handleCardPress}) => {
   const [isHeartFilled, setHeartFilled] = useState(false);
   const dispatch = useDispatch();
   const favourites = useSelector(state => state.like.favouriteItem);
   const [toastMessage, setToastMessage] = useState('');
-  const [isLoggedIn, setLoggedIn] = useState(false);
-
-  const user = useSelector(state => (state.user.message = 'true'));
+  let isLoggedIn = useSelector(state => state.user.isAuthenticated);
+  const user = useSelector(state => state.user.user);
   useEffect(() => {
-    const checkLoginStatus = async () => {
-      try {
-        const responseUser = await AsyncStorage.getItem('isLoggedIn');
-        setLoggedIn(responseUser === 'true');
-      } catch (error) {
-        console.error('Error retrieving login status:', error);
-      }
-    };
-
-    checkLoginStatus();
     // Check if the item is in the favorites list
     const isItemInFavorites = favourites.some(
       favItem => favItem.name === item.name,
@@ -44,6 +32,8 @@ const CardFirst = ({item, handleCardPress}) => {
         setToastMessage('Removed from favorites');
       } else {
         dispatch(addToFav(item));
+        FavioriteService(user.data.token, item);
+        
         setToastMessage('Added to favorites');
       }
     }

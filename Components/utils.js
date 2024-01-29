@@ -12,7 +12,7 @@ const useCartActions = () => {
   const dispatch = useDispatch();
 
   const carts = useSelector(state => state.cart.cartItem);
-  const user = useSelector(state => (state.user.isAuthenticated));
+  const user = useSelector(state => state.user.user);
 
   const handleRemoveToCart = item => {
     dispatch(removeToCart(item));

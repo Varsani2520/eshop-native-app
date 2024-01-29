@@ -1,17 +1,27 @@
 import React, {useState} from 'react';
-import {View, Text, TouchableOpacity, Image} from 'react-native';
+import {View, Text, TouchableOpacity, Image, Button} from 'react-native';
 import {styles} from '../../StyleSheet/style';
 import Icon from 'react-native-vector-icons/Ionicons'; // Import FontAwesome as an example
 import ProfileFavourites from './ProfileFavourites';
 import ProfileBooking from './ProfileBooking';
 import ProfileNotifications from './ProfileNotifications';
 import ProfileDeleteAccount from './ProfileDeleteAccount';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import {clearCart, clearFav, logoutuser, removeToFav} from '../Redux/action';
+import {useNavigation} from '@react-navigation/native';
 
 const ProfileScreen = () => {
   const [selectedAction, setSelectedAction] = useState(null);
   const user = useSelector(state => state.user.authUser.data);
-  console.log(user);
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+  // logout
+  function handleLogout() {
+    dispatch(logoutuser());
+    dispatch(clearFav());
+    dispatch(clearCart());
+    navigation.navigate('eShop');
+  }
   const renderContent = () => {
     switch (selectedAction) {
       case 'Booking':
@@ -53,6 +63,12 @@ const ProfileScreen = () => {
         <Text style={styles.userUsername}>
           {user ? user.username : 'guest'}
         </Text>
+
+        <Button
+          title="Logout"
+          onPress={handleLogout}
+          style={styles.buttonText}
+        />
       </View>
 
       {/* Action Icons */}

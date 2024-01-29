@@ -8,7 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import useCartActions from '../utils';
 
 const SingleService = ({route}) => {
-  const [isLoggedIn, setLoggedIn] = useState(false);
+  let isLoggedIn = useSelector(state => state.user.isAuthenticated);
   const [toastMessage, setToastMessage] = useState('');
   const {user} = useCartActions();
   const {propKey} = route.params;
@@ -19,6 +19,7 @@ const SingleService = ({route}) => {
     if (isLoggedIn && user) {
       setToastMessage('Added to cart successfully');
       dispatch(addToCart(item));
+      
     } else {
       setToastMessage('Please login first');
       return;
@@ -30,18 +31,6 @@ const SingleService = ({route}) => {
     console.log('Buy Now');
   };
 
-  useEffect(() => {
-    const checkLoginStatus = async () => {
-      try {
-        const responseUser = await AsyncStorage.getItem('isLoggedIn');
-        setLoggedIn(responseUser === 'true');
-      } catch (error) {
-        console.error('Error retrieving login status:', error);
-      }
-    };
-
-    checkLoginStatus();
-  }, []);
   return (
     <View style={styles.CardContainer}>
       <View style={styles.contentContainer}>

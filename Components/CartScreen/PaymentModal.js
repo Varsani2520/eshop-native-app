@@ -34,7 +34,7 @@ const PaymentModal = ({visible, onClose, totalPrice, onPaymentSubmit}) => {
   async function paymentSuccess() {
     try {
       const response = await summaryServices(tokens, carts, 'pending', date);
-      console.log(response);
+      
     } catch (error) {
       console.log(error);
     }

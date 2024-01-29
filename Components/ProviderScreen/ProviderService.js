@@ -7,13 +7,16 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import ToastMessage from '../ToastMessage';
 import {useSelector, useDispatch} from 'react-redux';
 import {addToFav, removeToFav} from '../Redux/action';
+import {FavioriteService} from '../../services/get-favourite';
 
 const ProviderService = ({route}) => {
   const [service, setService] = useState([]);
   const {providerId, providerTitle} = route.params;
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const isLoggedIn = useSelector(state => state.user.message === 'true');
+  let isLoggedIn = useSelector(state => state.user.isAuthenticated);
+  const user = useSelector(state => state.user.user);
+  const favourites = useSelector(state => state.like.favouriteItem);
   const [isHeartFilledArray, setIsHeartFilledArray] = useState([]);
   const [toastMessage, setToastMessage] = useState('');
 
@@ -21,7 +24,10 @@ const ProviderService = ({route}) => {
     try {
       const result = await HomeProviderService({id: providerId});
       setService(result);
-      setIsHeartFilledArray(new Array(result.length).fill(false));
+      const heartFilledArray = result.map(item =>
+        favourites.some(favouriteItem => favouriteItem.id === item.id),
+      );
+      setIsHeartFilledArray(heartFilledArray);
     } catch (error) {
       console.error('Error fetching service data:', error);
     }
@@ -29,28 +35,22 @@ const ProviderService = ({route}) => {
 
   useEffect(() => {
     fetchServiceData();
-  }, [providerId]);
+  }, [providerId, favourites]);
 
-  const handleHeartPress = async index => {
-    const updatedArray = [...isHeartFilledArray];
-    updatedArray[index] = !updatedArray[index];
-    setIsHeartFilledArray(updatedArray);
-
-    const selectedService = service[index];
-
-    if (!isLoggedIn) {
-      setToastMessage('Please login');
+  function fav(item, index) {
+    if (!isLoggedIn && user) {
+      setToastMessage('Please log in to add to favorites.');
       return;
-    }
-
-    if (updatedArray[index]) {
-      dispatch(addToFav(selectedService));
-      setToastMessage('Added to Favourites');
     } else {
-      dispatch(removeToFav(selectedService));
-      setToastMessage('Removed from Favourites');
+      if (isHeartFilledArray[index]) {
+        setToastMessage('Your item is already in your Wishlist');
+      } else {
+        dispatch(addToFav(item));
+        FavioriteService(user.data.token, item);
+        setToastMessage('Added to wishlist successfully');
+      }
     }
-  };
+  }
 
   const handleCardPress = item => {
     navigation.navigate('SingleService', {propKey: item});
@@ -76,7 +76,7 @@ const ProviderService = ({route}) => {
                   <View style={styles.overlayIcons}>
                     <TouchableOpacity
                       style={styles.iconButton}
-                      onPress={() => handleHeartPress(index)}>
+                      onPress={() => fav(item, index)}>
                       <Icon
                         name={
                           isHeartFilledArray[index] ? 'heart' : 'heart-outline'
